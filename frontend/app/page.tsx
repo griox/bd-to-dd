@@ -528,6 +528,182 @@ function TracePreview({ value }: { value: unknown }) {
   return <div className="text-sm text-slate-700">{String(normalized)}</div>;
 }
 
+const KB_STEP_META: Record<string, { icon: string; algo: string; outputDesc: string }> = {
+  load_samples: {
+    icon: "📂",
+    algo: "InputReviewedDdLoader quét toàn bộ thư mục INPUT/DD/ (bao gồm ảnh), đọc file JSON/Markdown, trích xuất text từ ảnh qua Gemini Vision nếu có.",
+    outputDesc: "Số lượng sample đọc được, danh sách sampleId, và đường dẫn nguồn.",
+  },
+  chunking: {
+    icon: "✂️",
+    algo: "ChunkingService phân tách từng sample thành cây chunk phân cấp (hierarchical). Chunk cha giữ context tổng quát, chunk lá giữ nội dung chi tiết. Mỗi chunk có sectionPath để trace về vị trí gốc.",
+    outputDesc: "Tổng số chunk tạo ra, preview 5 chunk đầu (chunkId, parentChunkId, sectionPath, isLeaf).",
+  },
+  embedding: {
+    icon: "🧮",
+    algo: "GeminiEmbeddingService gọi Gemini Embedding API theo batch, chuyển text mỗi chunk thành dense vector nhiều chiều (thường 768–3072 dims). Vector này mã hóa ngữ nghĩa của đoạn text.",
+    outputDesc: "Số embedding sinh ra, số chiều vector, preview vector 5 phần tử đầu của 3 chunk đầu.",
+  },
+  metadata: {
+    icon: "🏷️",
+    algo: "Gắn embedding vector vào metadata dict của mỗi chunk (key \"embedding\"). Giữ nguyên các metadata khác như module_type, approval_status, quality_score. Chuẩn bị payload hoàn chỉnh để upsert.",
+    outputDesc: "Số chunk đã gắn metadata, preview metadataKeys và xác nhận có trường embedding.",
+  },
+  clear_indexes: {
+    icon: "🗑️",
+    algo: "Xóa sạch Qdrant collection (dense vector store) và BM25 in-memory index (sparse). Đảm bảo KB mới không bị nhiễm dữ liệu cũ khi thay đổi tập sample.",
+    outputDesc: "Xác nhận denseCleared và sparseCleared = true.",
+  },
+  qdrant_upsert: {
+    icon: "🗄️",
+    algo: "dense_vector_store.upsert_chunks() gửi từng batch chunk kèm vector lên Qdrant. Qdrant xây dựng HNSW index để tìm kiếm Approximate Nearest Neighbor (ANN) nhanh khi query.",
+    outputDesc: "Tên collection, tổng số point sau upsert, số chunk đã index.",
+  },
+  bm25_index: {
+    icon: "🔍",
+    algo: "BM25Repository xây dựng inverted index từ text của các chunk (không dùng embedding). BM25 là thuật toán TF-IDF nâng cao, tính điểm dựa trên tần suất từ và độ dài document. Dùng cho sparse retrieval.",
+    outputDesc: "Số chunk đã index vào BM25, trạng thái index (indexLoaded, chunkCount).",
+  },
+};
+
+function KbStepAccordion({ steps, currentStep }: { steps: KnowledgeBaseProgressStep[]; currentStep?: string | null }) {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  const toggle = (key: string) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  return (
+    <div className="mt-4 space-y-2">
+      {steps.map((step, index) => {
+        const key = step.key ?? `step-${index}`;
+        const meta = KB_STEP_META[step.key ?? ""];
+        const isOpen = expanded[key] ?? false;
+        const isRunning = step.status === "running" || currentStep === step.key;
+        const isCompleted = step.status === "completed";
+        const isFailed = step.status === "failed";
+
+        const borderColor = isFailed
+          ? "border-rose-300"
+          : isCompleted
+          ? "border-emerald-300"
+          : isRunning
+          ? "border-blue-300"
+          : "border-slate-200";
+
+        const bgColor = isFailed
+          ? "bg-rose-50"
+          : isCompleted
+          ? "bg-emerald-50"
+          : isRunning
+          ? "bg-blue-50"
+          : "bg-white";
+
+        const statusIcon = isFailed ? "❌" : isCompleted ? "✅" : isRunning ? "⏳" : "⬜";
+        const statusBadge = isFailed
+          ? "bg-rose-100 text-rose-700"
+          : isCompleted
+          ? "bg-emerald-100 text-emerald-700"
+          : isRunning
+          ? "bg-blue-100 text-blue-700 animate-pulse"
+          : "bg-slate-100 text-slate-500";
+
+        return (
+          <div key={key} className={`rounded-xl border ${borderColor} ${bgColor} overflow-hidden transition-all`}>
+            {/* Header — always visible */}
+            <button
+              type="button"
+              onClick={() => toggle(key)}
+              className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-black/5 transition-colors"
+            >
+              <span className="text-lg shrink-0">{meta?.icon ?? "🔧"}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm font-semibold text-slate-900">
+                    {step.label ?? step.key ?? `Step ${index + 1}`}
+                  </span>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${statusBadge}`}>
+                    {statusIcon} {step.status ?? "pending"}
+                  </span>
+                </div>
+                {step.message && (
+                  <p className="mt-0.5 text-xs text-slate-500 truncate">{step.message}</p>
+                )}
+              </div>
+              <span className="shrink-0 text-slate-400 text-sm">{isOpen ? "▲" : "▼"}</span>
+            </button>
+
+            {/* Expanded content */}
+            {isOpen && (
+              <div className="border-t border-current border-opacity-10 px-4 pb-4 pt-3 space-y-3">
+                {/* Algorithm description */}
+                {meta && (
+                  <div className="rounded-lg bg-slate-800 px-4 py-3 text-xs leading-relaxed">
+                    <div className="text-slate-400 font-semibold uppercase tracking-wider mb-1">⚙️ Thuật toán</div>
+                    <div className="text-slate-200">{meta.algo}</div>
+                    <div className="mt-2 text-slate-400 font-semibold uppercase tracking-wider mb-1">📤 Output</div>
+                    <div className="text-slate-300">{meta.outputDesc}</div>
+                  </div>
+                )}
+
+                {/* Step message */}
+                {step.message && (
+                  <div className="text-sm text-slate-700">
+                    <span className="font-semibold">Kết quả: </span>{step.message}
+                  </div>
+                )}
+
+                {/* Step output — rendered nicely */}
+                {step.output && (
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Output chi tiết</div>
+                    <div className="grid gap-2">
+                      {Object.entries(step.output).map(([k, v]) => (
+                        <div key={k} className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                            {humanizeKey(k)}
+                          </div>
+                          {Array.isArray(v) ? (
+                            <div className="space-y-1">
+                              {(v as unknown[]).slice(0, 8).map((item, i) => (
+                                <div key={i} className="text-xs text-slate-700 rounded bg-slate-50 px-2 py-1">
+                                  {typeof item === "object" ? (
+                                    <pre className="whitespace-pre-wrap text-[10px] text-slate-600">{prettyJson(item)}</pre>
+                                  ) : (
+                                    String(item)
+                                  )}
+                                </div>
+                              ))}
+                              {(v as unknown[]).length > 8 && (
+                                <div className="text-xs text-slate-400">+{(v as unknown[]).length - 8} more...</div>
+                              )}
+                            </div>
+                          ) : typeof v === "object" && v !== null ? (
+                            <pre className="text-[10px] leading-relaxed text-slate-700 whitespace-pre-wrap">{prettyJson(v)}</pre>
+                          ) : typeof v === "boolean" ? (
+                            <span className={`text-xs font-bold ${v ? "text-emerald-600" : "text-rose-600"}`}>
+                              {v ? "✅ true" : "❌ false"}
+                            </span>
+                          ) : (
+                            <span className="text-sm font-semibold text-slate-800">{String(v)}</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Timestamp */}
+                {step.timestamp && (
+                  <div className="text-[10px] text-slate-400">🕐 {step.timestamp}</div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
@@ -900,7 +1076,7 @@ export default function Home() {
 
           <div className="grid gap-4 md:grid-cols-3">
             <label className="rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/60 p-4">
-              <span className="block text-sm font-semibold text-blue-950">A. Design Markdown *</span>
+              <span className="block text-sm font-semibold text-blue-950"> Design Markdown *</span>
               <span className="mt-1 block min-h-10 text-xs text-blue-800">Đề bài Basic/UI Design mô tả chức năng và màn hình.</span>
               <input
                 type="file"
@@ -914,7 +1090,7 @@ export default function Home() {
             </label>
 
             <label className="rounded-xl border-2 border-dashed border-violet-200 bg-violet-50/60 p-4">
-              <span className="block text-sm font-semibold text-violet-950">B. UI Images</span>
+              <span className="block text-sm font-semibold text-violet-950"> UI Images</span>
               <span className="mt-1 block min-h-10 text-xs text-violet-800">Một hoặc nhiều ảnh sẽ được Gemini Flash đọc và mô tả.</span>
               <input
                 type="file"
@@ -929,7 +1105,7 @@ export default function Home() {
             </label>
 
             <label className="rounded-xl border-2 border-dashed border-emerald-200 bg-emerald-50/60 p-4">
-              <span className="block text-sm font-semibold text-emerald-950">C. Composable CSV</span>
+              <span className="block text-sm font-semibold text-emerald-950"> Composable CSV</span>
               <span className="mt-1 block min-h-10 text-xs text-emerald-800">Danh sách component/composable liên quan đến màn hình.</span>
               <input
                 type="file"
@@ -1036,35 +1212,7 @@ export default function Home() {
           )}
 
           {kbSteps.length > 0 && (
-            <div className="mt-4 space-y-3">
-              {kbSteps.map((step, index) => (
-                <div
-                  key={`${step.key ?? "step"}-${index}`}
-                  className={`rounded-lg border p-4 ${
-                    step.status === "completed"
-                      ? "border-emerald-200 bg-emerald-50"
-                      : step.status === "failed"
-                        ? "border-rose-200 bg-rose-50"
-                        : "border-blue-200 bg-blue-50"
-                  }`}
-                >
-                  <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
-                    <div className="text-sm font-semibold text-slate-900">
-                      {step.label ?? step.key ?? `Step ${index + 1}`}
-                    </div>
-                    <div className="text-xs uppercase tracking-wide text-slate-600">
-                      {step.status ?? "unknown"}
-                    </div>
-                  </div>
-                  <div className="mt-1 text-sm text-slate-700">{step.message ?? "No message"}</div>
-                  {step.output && (
-                    <pre className="mt-3 overflow-x-auto rounded-md bg-slate-900 p-4 text-xs text-emerald-200">
-                      {prettyJson(step.output)}
-                    </pre>
-                  )}
-                </div>
-              ))}
-            </div>
+            <KbStepAccordion steps={kbSteps} currentStep={kbProgress?.currentStep} />
           )}
 
           {kbProgress?.resultPreview && (
