@@ -1,0 +1,63 @@
+GUIDELINES = [
+    {
+        "id": "G-BD-GROUNDING",
+        "stage": "basic_design_analytics",
+        "severity": "must",
+        "rule": "Ground all extracted modules, entities, flows, and APIs in the provided Basic Design.",
+    },
+    {
+        "id": "G-UI-SIGNALS",
+        "stage": "basic_design_analytics",
+        "severity": "should",
+        "rule": "Use UI Design input as interaction evidence when present; mark it as missing when absent.",
+    },
+    {
+        "id": "G-NO-HALLUCINATION",
+        "stage": "design_analysis_generation",
+        "severity": "must",
+        "rule": "Mark assumptions explicitly instead of inventing missing requirements.",
+    },
+    {
+        "id": "G-MASTER-ALIGNMENT",
+        "stage": "design_analysis_generation",
+        "severity": "should",
+        "rule": "Preserve module boundaries and API standards from write-master-design when available.",
+    },
+    {
+        "id": "G-SAMPLE-USE",
+        "stage": "design_analysis_generation",
+        "severity": "should",
+        "rule": "Use retrieved reviewed DD samples as reference patterns, not as source requirements.",
+    },
+    {
+        "id": "G-DD-TEMPLATE",
+        "stage": "detail_design_generation",
+        "severity": "must",
+        "rule": "Generate DD using the detail-design Screen, API, and Batch templates.",
+    },
+    {
+        "id": "G-DD-COMPONENTS",
+        "stage": "detail_design_generation",
+        "severity": "should",
+        "rule": "Reuse common components for API envelopes, audit logging, pagination, upload, validation, and state handling.",
+    },
+    {
+        "id": "G-DD-TRACEABILITY",
+        "stage": "detail_design_generation",
+        "severity": "must",
+        "rule": "Keep each DD section traceable to BD analytics, UI signals, retrieved samples, or explicit assumptions.",
+    },
+    {
+        "id": "G-REVIEW-RULES",
+        "stage": "detail_design_review",
+        "severity": "must",
+        "rule": "Review generated DD against rule-based checklists before designer approval/export.",
+    },
+    {
+        "id": "G-REVIEW-LOOP",
+        "stage": "detail_design_review",
+        "severity": "must",
+        "rule": "When a required checklist rule fails, return actionable feedback for the next generation iteration.",
+    },
+]
+

@@ -1,0 +1,106 @@
+CHECKLISTS = {
+    "detail_design": {
+        "id": "detail-design-review",
+        "stage": "detail_design_review",
+        "description": "Rules used by the auto-review loop before designer review/export.",
+        "rules": [
+            {
+                "id": "DA-SUMMARY",
+                "severity": "error",
+                "path": "analysis.summary",
+                "message": "Design Analysis summary is required.",
+            },
+            {
+                "id": "DA-ENTITIES",
+                "severity": "error",
+                "path": "analysis.entities",
+                "message": "Design Analysis must list entities/data models.",
+            },
+            {
+                "id": "DA-FLOWS",
+                "severity": "error",
+                "path": "analysis.businessFlows",
+                "message": "Design Analysis must list business flows.",
+            },
+            {
+                "id": "DD-SCREEN-UI",
+                "severity": "error",
+                "path": "detailDesign.screen.01_UI_Design",
+                "message": "Screen DD must include UI design details.",
+            },
+            {
+                "id": "DD-SCREEN-COMPONENTS",
+                "severity": "error",
+                "path": "detailDesign.screen.02_Components",
+                "message": "Screen DD must include components.",
+            },
+            {
+                "id": "DD-SCREEN-DATA",
+                "severity": "error",
+                "path": "detailDesign.screen.03_Data_Models",
+                "message": "Screen DD must include data models.",
+            },
+            {
+                "id": "DD-SCREEN-API",
+                "severity": "error",
+                "path": "detailDesign.screen.04_API_Integration",
+                "message": "Screen DD must include API integration.",
+            },
+            {
+                "id": "DD-SCREEN-LOGIC",
+                "severity": "error",
+                "path": "detailDesign.screen.05_Business_Logic",
+                "message": "Screen DD must include business logic.",
+            },
+            {
+                "id": "DD-SCREEN-STATE",
+                "severity": "error",
+                "path": "detailDesign.screen.06_State_Management",
+                "message": "Screen DD must include state management.",
+            },
+            {
+                "id": "DD-API-CONTRACT",
+                "severity": "error",
+                "path": "detailDesign.api.01_Contract",
+                "message": "API DD must include method/path/request/response/error contract.",
+            },
+            {
+                "id": "DD-API-LOGIC",
+                "severity": "error",
+                "path": "detailDesign.api.02_Business_Logic",
+                "message": "API DD must include service business logic.",
+            },
+            {
+                "id": "DD-API-DATA",
+                "severity": "error",
+                "path": "detailDesign.api.03_Data_Access",
+                "message": "API DD must include data access details.",
+            },
+            {
+                "id": "DD-BATCH-JOB",
+                "severity": "error",
+                "path": "detailDesign.batch.01_Job_Definition",
+                "message": "Batch DD must include job definition.",
+            },
+            {
+                "id": "DD-BATCH-LOGIC",
+                "severity": "error",
+                "path": "detailDesign.batch.02_Processing_Logic",
+                "message": "Batch DD must include processing logic.",
+            },
+            {
+                "id": "DD-BATCH-DATA",
+                "severity": "error",
+                "path": "detailDesign.batch.03_Data_Access",
+                "message": "Batch DD must include data access details.",
+            },
+            {
+                "id": "DD-TEST-CASES",
+                "severity": "warning",
+                "path": "review.nextActions",
+                "message": "Review output should propose next actions or test coverage notes.",
+            },
+        ],
+    }
+}
+

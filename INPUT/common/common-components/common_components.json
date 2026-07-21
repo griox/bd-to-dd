@@ -1,0 +1,3141 @@
+[
+  {
+    "DS_name": "NpAccordion",
+    "DS_items": [
+      {
+        "item_name": "title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "defaultExpanded",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpAccordionLineItem",
+    "DS_items": [
+      {
+        "item_name": "lineItemData[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "lineItemData[要素分].title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "lineItemData[要素分].label",
+        "item_type": "List&lt;String&gt; = emptyList("
+      }
+    ]
+  },
+  {
+    "DS_name": "NpBadge",
+    "DS_items": [
+      {
+        "item_name": "count",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "type",
+        "item_type": "NpBadgeType"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpBadgeSize = SMALL"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpDotBadge",
+    "DS_items": [
+      {
+        "item_name": "isVisible",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "getColor",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpBadgeType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCalendar",
+    "DS_items": [
+      {
+        "item_name": "weeklyStatus",
+        "item_type": "NpWeeklyStatus = NpWeeklyStatus()"
+      },
+      {
+        "item_name": "weeklyStatus.mon",
+        "item_type": "NpDailyStatus = NpDailyStatus("
+      }
+    ]
+  },
+  {
+    "DS_name": "NpAccordionCard",
+    "DS_items": [
+      {
+        "item_name": "width",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "headerTitle",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "headerTitleColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "headerIcon",
+        "item_type": "ComposablePainter? = null"
+      },
+      {
+        "item_name": "headerContent",
+        "item_type": "@Composable () -> Unit = {}"
+      },
+      {
+        "item_name": "bodyContent",
+        "item_type": "@Composable () -> Unit = {}"
+      },
+      {
+        "item_name": "defaultExpanded",
+        "item_type": "Boolean = false"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCard",
+    "DS_items": [
+      {
+        "item_name": "cardType",
+        "item_type": "NpCardType = NpCardType.DEFAULT"
+      },
+      {
+        "item_name": "isRoute",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "isSelected",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "onSelected",
+        "item_type": "() -> Unit = {}"
+      },
+      {
+        "item_name": "height",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "width",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "minHeight",
+        "item_type": "Dp = NpCardTokens.minHeight"
+      },
+      {
+        "item_name": "minWidth",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "useOverLayMask",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "overLayColor",
+        "item_type": "NpCardOverLayColor? = null"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable ColumnScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCollapsibleCard",
+    "DS_items": [
+      {
+        "item_name": "cardType",
+        "item_type": "NpCardType = NpCardType.DEFAULT"
+      },
+      {
+        "item_name": "defaultExpanded",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "isRoute",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "isSelected",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "useOverLayMask",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "headerContent",
+        "item_type": "@Composable ColumnScope.() -> Unit = {}"
+      },
+      {
+        "item_name": "bodyContent",
+        "item_type": "@Composable ColumnScope.() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpStackedCard",
+    "DS_items": [
+      {
+        "item_name": "cardType",
+        "item_type": "NpCardType = NpCardType.DEFAULT"
+      },
+      {
+        "item_name": "isRoute",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "isSelected",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "height",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "width",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "minHeight",
+        "item_type": "Dp = NpCardTokens.minHeight"
+      },
+      {
+        "item_name": "minWidth",
+        "item_type": "Dp? = null"
+      },
+      {
+        "item_name": "useOverLayMask",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "overLayColorColor",
+        "item_type": "NpCardOverLayColor? = null"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable ColumnScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "getBorderColor",
+    "DS_items": [
+      {
+        "item_name": "isRoute",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "isSelected",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "getContainerColor",
+    "DS_items": [
+      {
+        "item_name": "cardType",
+        "item_type": "NpCardType"
+      },
+      {
+        "item_name": "isSelected",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "getOverLayColor",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpCardOverLayColor?"
+      }
+    ]
+  },
+  {
+    "DS_name": "getOverLayColor",
+    "DS_items": [
+      {
+        "item_name": "cardType",
+        "item_type": "NpCardType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpAlertInfoBox",
+    "DS_items": [
+      {
+        "item_name": "messages",
+        "item_type": "List&lt;String&gt;"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTitledInfoBox",
+    "DS_items": [
+      {
+        "item_name": "leftLabel",
+        "item_type": "String"
+      },
+      {
+        "item_name": "rightLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "mainLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "leftLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "mainLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "content",
+        "item_type": "(@Composable () -> Unit)? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTitleLessInfoBox",
+    "DS_items": [
+      {
+        "item_name": "paddingSize",
+        "item_type": "NpPaddingSize = NpPaddingSize.MEDIUM"
+      },
+      {
+        "item_name": "content",
+        "item_type": "(@Composable () -> Unit)"
+      }
+    ]
+  },
+  {
+    "DS_name": "getBackgroundColor",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpInfoBoxBackgroundColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCheckBoxListItem",
+    "DS_items": [
+      {
+        "item_name": "checked",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onCheckedChange",
+        "item_type": "(Boolean) -> Unit"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "labelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpList",
+    "DS_items": [
+      {
+        "item_name": "borderType",
+        "item_type": "NpListBorderType = ALL"
+      },
+      {
+        "item_name": "content",
+        "item_type": " - "
+      },
+      {
+        "item_name": "content[index].title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "content[index].endLabel",
+        "item_type": "String"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpList",
+    "DS_items": [
+      {
+        "item_name": "borderType",
+        "item_type": "NpListBorderType = ALL"
+      },
+      {
+        "item_name": "defaultExpanded",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "accordionHeaderIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "accordionHeaderTitle",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "accordionHeaderLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "content",
+        "item_type": "NpListScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTextListItem",
+    "DS_items": [
+      {
+        "item_name": "icon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "title",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "endLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "getBackgroundColor",
+    "DS_items": [
+      {
+        "item_name": "backgroundColor",
+        "item_type": "BackgroundType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpPaper",
+    "DS_items": [
+      {
+        "item_name": "itemGap",
+        "item_type": "SpaceKey? = null"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCollapsiblePaper",
+    "DS_items": [
+      {
+        "item_name": "defaultExpanded",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "itemGap",
+        "item_type": "SpaceKey? = null"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpPinnedArea",
+    "DS_items": [
+      {
+        "item_name": "tags[要素分]",
+        "item_type": "List&lt;NpSpecialModeType&gt; = emptyList() [optional]"
+      },
+      {
+        "item_name": "topLineItemProps[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "topLineItemProps[要素分].leftLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "topLineItemProps[要素分].leftLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK [optional]"
+      },
+      {
+        "item_name": "topLineItemProps[要素分].rightLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "topLineItemProps[要素分].rightLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK [optional]"
+      },
+      {
+        "item_name": "bottomLineItemProps[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "bottomLineItemProps[要素分].leftLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "bottomLineItemProps[要素分].leftLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK [optional]"
+      },
+      {
+        "item_name": "bottomLineItemProps[要素分].rightLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "bottomLineItemProps[要素分].rightLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK [optional]"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpStepArea",
+    "DS_items": [
+      {
+        "item_name": "stepAreaType",
+        "item_type": "NpStepAreaType"
+      },
+      {
+        "item_name": "stepProps[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "stepProps[要素分].title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "stepProps[要素分].label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "stepProps[要素分].labelDisplayType",
+        "item_type": "NpStepDisplayType = NpStepDisplayType.DEFAULT"
+      },
+      {
+        "item_name": "stepProps[要素分].secondaryLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "stepProps[要素分].secondaryLabelDisplayType",
+        "item_type": "NpStepDisplayType = NpStepDisplayType.DEFAULT"
+      },
+      {
+        "item_name": "stepProps[要素分].onClick",
+        "item_type": "("
+      }
+    ]
+  },
+  {
+    "DS_name": "getIcon",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpStepIcon?"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpLeadingEllipsisText",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "style",
+        "item_type": "NpTextStyle = NpTextStyle.BODY_MEDIUM"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpTextColor = BLACK"
+      },
+      {
+        "item_name": "textAlign",
+        "item_type": "TextAlign = TextAlign.Left"
+      },
+      {
+        "item_name": "alpha",
+        "item_type": "Float = 1f"
+      },
+      {
+        "item_name": "softWrap",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "maxLines",
+        "item_type": "Int = 1"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1"
+      },
+      {
+        "item_name": "linkUri",
+        "item_type": "String? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpPhoneNumberText",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "String?"
+      },
+      {
+        "item_name": "phoneNumber",
+        "item_type": "String"
+      },
+      {
+        "item_name": "style",
+        "item_type": "NpTextStyle = NpTextStyle.BODY_MEDIUM"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpTextColor = BLACK"
+      },
+      {
+        "item_name": "textAlign",
+        "item_type": "TextAlign = TextAlign.Left"
+      },
+      {
+        "item_name": "overflow",
+        "item_type": "TextOverflow = TextOverflow.Clip"
+      },
+      {
+        "item_name": "alpha",
+        "item_type": "Float = 1f"
+      },
+      {
+        "item_name": "softWrap",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "maxLines",
+        "item_type": "Int = Int.MAX_VALUE"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpText",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "style",
+        "item_type": "NpTextStyle = NpTextStyle.BODY_MEDIUM"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpTextColor = BLACK [optional]"
+      },
+      {
+        "item_name": "textAlign",
+        "item_type": "TextAlign = TextAlign.Left"
+      },
+      {
+        "item_name": "overflow",
+        "item_type": "TextOverflow = TextOverflow.Clip [optional]"
+      },
+      {
+        "item_name": "alpha",
+        "item_type": "Float = 1f [optional]"
+      },
+      {
+        "item_name": "softWrap",
+        "item_type": "Boolean = true [optional]"
+      },
+      {
+        "item_name": "maxLines",
+        "item_type": "Int = Int.MAX_VALUE"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1 [optional]"
+      },
+      {
+        "item_name": "linkUri",
+        "item_type": "String? = null [optional]"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpText",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "AnnotatedString"
+      },
+      {
+        "item_name": "style",
+        "item_type": "NpTextStyle = NpTextStyle.BODY_MEDIUM"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpTextColor = BLACK [optional]"
+      },
+      {
+        "item_name": "textAlign",
+        "item_type": "TextAlign = TextAlign.Left"
+      },
+      {
+        "item_name": "overflow",
+        "item_type": "TextOverflow = TextOverflow.Clip [optional]"
+      },
+      {
+        "item_name": "alpha",
+        "item_type": "Float = 1f [optional]"
+      },
+      {
+        "item_name": "softWrap",
+        "item_type": "Boolean = true [optional]"
+      },
+      {
+        "item_name": "maxLines",
+        "item_type": "Int = Int.MAX_VALUE"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1 [optional]"
+      },
+      {
+        "item_name": "linkUri",
+        "item_type": "String? = null [optional]"
+      }
+    ]
+  },
+  {
+    "DS_name": "color",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpTextColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "style",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpTextStyle"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpFadeAnimation",
+    "DS_items": [
+      {
+        "item_name": "visible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpProgressBar",
+    "DS_items": [
+      {
+        "item_name": "current",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "total",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpProgressColor = NpProgressColor.YELLOW"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpProgressCirCle",
+    "DS_items": [
+      {
+        "item_name": "progress",
+        "item_type": "Float"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpStatBar",
+    "DS_items": [
+      {
+        "item_name": "countDataList",
+        "item_type": "List&lt;NpProgressCountData&gt;"
+      },
+      {
+        "item_name": "countDataList[要素分].label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "countDataList[要素分].count",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "getProgressIndicatorBarBackgroundColor",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpProgressColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpBentoMenuButton",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpBentoMenuButtonType"
+      },
+      {
+        "item_name": "type.color",
+        "item_type": "Color, val text: Int, val icon: ComposablePainter"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "height",
+        "item_type": "NpBentoMenuButtonHeight = NpBentoMenuButtonHeight.NORMAL"
+      },
+      {
+        "item_name": "height.height",
+        "item_type": "Dp"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "typography",
+    "DS_items": [
+      {
+        "item_name": "size",
+        "item_type": "NpButtonSize"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCardButton",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpButtonType"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpCardButtonSize"
+      },
+      {
+        "item_name": "text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "isShowArrowIcon",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "badgeCount",
+        "item_type": "Int = 0"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCounterGroupButton",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "deliveryCount",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "pickupCount",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "otherCount",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpCounterGroupButtonColor = NpCounterGroupButtonColor.WHITE"
+      }
+    ]
+  },
+  {
+    "DS_name": "getBackgroundColor",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpCounterGroupButtonColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpIconButton",
+    "DS_items": [
+      {
+        "item_name": "icon",
+        "item_type": "Painter"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "buttonType",
+        "item_type": "NpIconButtonType = NpIconButtonType.SQUARE"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpIconButtonSize = MEDIUM"
+      },
+      {
+        "item_name": "iconTint",
+        "item_type": "Color = NpTheme.color.common.black"
+      },
+      {
+        "item_name": "hasShadow",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "hasBorder",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpIconToggleButton",
+    "DS_items": [
+      {
+        "item_name": "icon",
+        "item_type": "Painter"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "buttonType",
+        "item_type": "NpIconButtonType = NpIconButtonType.SQUARE"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpIconButtonSize = MEDIUM"
+      },
+      {
+        "item_name": "isPressed",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "iconTint",
+        "item_type": "Color = Color.Unspecified"
+      },
+      {
+        "item_name": "hasShadow",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "iconButtonBgColor",
+    "DS_items": [
+      {
+        "item_name": "isPressed",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "iconButtonBorderColor",
+    "DS_items": [
+      {
+        "item_name": "isPressed",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "iconButtonShape",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpIconButtonType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpLightSwitchButton",
+    "DS_items": [
+      {
+        "item_name": "isLighting",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpMapButton",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpMapButtonType"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpMapButtonSize = MEDIUM"
+      },
+      {
+        "item_name": "leftIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTextButton",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "icon",
+        "item_type": "Painter? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpToggleButton",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpButtonSize"
+      },
+      {
+        "item_name": "isSwitched",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onChange",
+        "item_type": "(switched: Boolean) -> Unit"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "leftIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "leftIconColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "rightIconColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCheckbox",
+    "DS_items": [
+      {
+        "item_name": "checked",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onCheckedChange",
+        "item_type": "(Boolean) -> Unit"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "textColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCheckboxCard",
+    "DS_items": [
+      {
+        "item_name": "checked",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onCheckedChange",
+        "item_type": "(Boolean) -> Unit"
+      },
+      {
+        "item_name": "checkboxLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "checkboxEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "text",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "buttonText",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "onButtonCLick",
+        "item_type": "(() -> Unit)? = null"
+      },
+      {
+        "item_name": "buttonEnabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpMultipleSelectionGroup",
+    "DS_items": [
+      {
+        "item_name": "items",
+        "item_type": "List&lt;NpMultipleSelectionItem&gt;"
+      },
+      {
+        "item_name": "items[要素分].label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "items[要素分].leftLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "items[要素分].rightLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "selectedItems",
+        "item_type": "List&lt;NpMultipleSelectionItem&gt;"
+      },
+      {
+        "item_name": "selectedItems[要素分].label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "selectedItems[要素分].leftLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "selectedItems[要素分].rightLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "columnCount",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onSelectionChange",
+        "item_type": "(List&lt;NpMultipleSelectionItem&gt;) -> Unit"
+      },
+      {
+        "item_name": "onSelectionChange[要素分].label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "onSelectionChange[要素分].leftLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "onSelectionChange[要素分].rightLabel",
+        "item_type": "String? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpDonokiChip",
+    "DS_items": [
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isFullSize",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpNumberChip",
+    "DS_items": [
+      {
+        "item_name": "text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpDatePicker",
+    "DS_items": [
+      {
+        "item_name": "isVisible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onDismiss",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "onConfirm",
+        "item_type": "(startDate: LocalDate?, endDate: LocalDate?) -> Unit"
+      },
+      {
+        "item_name": "isRangeSelection",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "initialStartDate",
+        "item_type": "LocalDate? = null"
+      },
+      {
+        "item_name": "initialEndDate",
+        "item_type": "LocalDate? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpInput",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "value",
+        "item_type": "String"
+      },
+      {
+        "item_name": "placeholder",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "maxLength",
+        "item_type": "Int? = null"
+      },
+      {
+        "item_name": "rightAssistant",
+        "item_type": "String? = null [optional]"
+      },
+      {
+        "item_name": "onValueChange",
+        "item_type": "(String) -> Unit [optional]"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpInputSize = NpInputSize.FULL [optional]"
+      },
+      {
+        "item_name": "singleLine",
+        "item_type": "Boolean = true [optional]"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1 [optional]"
+      },
+      {
+        "item_name": "isError",
+        "item_type": "Boolean = false [optional]"
+      },
+      {
+        "item_name": "errorMessage",
+        "item_type": "String? = null [optional]"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true [optional]"
+      },
+      {
+        "item_name": "leftAssistant",
+        "item_type": "String? = null [optional]"
+      },
+      {
+        "item_name": "leftIcon",
+        "item_type": "Painter? = null [optional]"
+      },
+      {
+        "item_name": "leftIconClick",
+        "item_type": "() -> Unit = {} [optional]"
+      },
+      {
+        "item_name": "rightIcon",
+        "item_type": "Painter? = null [optional]"
+      },
+      {
+        "item_name": "rightIconClick",
+        "item_type": "() -> Unit = {} [optional]"
+      },
+      {
+        "item_name": "imeAction",
+        "item_type": "ImeAction = ImeAction.Default [optional]"
+      },
+      {
+        "item_name": "onKeyboardAction",
+        "item_type": "(() -> Unit)? = null [optional]"
+      }
+    ]
+  },
+  {
+    "DS_name": "inputWidth",
+    "DS_items": [
+      {
+        "item_name": "size",
+        "item_type": "NpInputSize"
+      }
+    ]
+  },
+  {
+    "DS_name": "borderColor",
+    "DS_items": [
+      {
+        "item_name": "isError",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "isFocused",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "backgroundColor",
+    "DS_items": [
+      {
+        "item_name": "isError",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpKeyboard",
+    "DS_items": [
+      {
+        "item_name": "value",
+        "item_type": "TextFieldValue [optional]"
+      },
+      {
+        "item_name": "onValueChange",
+        "item_type": "(TextFieldValue) -> Unit [optional]"
+      },
+      {
+        "item_name": "keyPattern",
+        "item_type": "NpKeyPattern"
+      },
+      {
+        "item_name": "keyPattern.keyboardTypes",
+        "item_type": "List&lt;NpKeyboardType&gt; [optional]"
+      },
+      {
+        "item_name": "keyPattern.keyboardTypes[要素分]",
+        "item_type": "NpKeyboardType [optional]"
+      },
+      {
+        "item_name": "keyPattern.keyboardTypes[要素分].label",
+        "item_type": "String [optional]"
+      },
+      {
+        "item_name": "keyPattern.kanaPunctuationType",
+        "item_type": "KanaPunctuationType [optional]"
+      },
+      {
+        "item_name": "keyPattern.numberPunctuationType",
+        "item_type": "NumberPunctuationType [optional]"
+      },
+      {
+        "item_name": "defaultType",
+        "item_type": "NpKeyboardType? = null"
+      },
+      {
+        "item_name": "defaultType.label",
+        "item_type": "String [optional]"
+      },
+      {
+        "item_name": "onOk",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "keyBackgroundColor",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "IconKeyBgColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "icon",
+    "DS_items": [
+      {
+        "item_name": "icon",
+        "item_type": "String"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpSelectionCard",
+    "DS_items": [
+      {
+        "item_name": "selected",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onRadioButtonClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "radioButtonEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "buttonText",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "onButtonCLick",
+        "item_type": "(() -> Unit)? = null"
+      },
+      {
+        "item_name": "buttonEnabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpSelectionCardGroup",
+    "DS_items": [
+      {
+        "item_name": "options",
+        "item_type": "List&lt;NpSelectionCardItem&gt;"
+      },
+      {
+        "item_name": "options[要素分].label",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "options[要素分].radioButtonEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "options[要素分].buttonLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "options[要素分].onButtonCLick",
+        "item_type": "(("
+      },
+      {
+        "item_name": "selectedOption",
+        "item_type": "NpSelectionCardItem"
+      },
+      {
+        "item_name": "selectedOption.label",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "selectedOption.radioButtonEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "selectedOption.buttonLabel",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "selectedOption.onButtonCLick",
+        "item_type": "(("
+      },
+      {
+        "item_name": "onSelect",
+        "item_type": "(NpSelectionCardItem) -> Unit"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpSearchBar",
+    "DS_items": [
+      {
+        "item_name": "value",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onValueChange",
+        "item_type": "(String) -> Unit"
+      },
+      {
+        "item_name": "onSearch",
+        "item_type": "(value: String) -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpSlider",
+    "DS_items": [
+      {
+        "item_name": "onValueChange",
+        "item_type": "(Float) -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpLineItemToggle",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "isSwitched",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "onChange",
+        "item_type": "(isSwitched: Boolean) -> Unit = {}"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpToggle",
+    "DS_items": [
+      {
+        "item_name": "isSwitched",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onChange",
+        "item_type": "(isSwitched: Boolean) -> Unit"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpToolbar",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "toggleProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "toggleProps.isSwitched",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "toggleProps.onChange",
+        "item_type": "("
+      },
+      {
+        "item_name": "leftButtonProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "leftButtonProps.label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "leftButtonProps.onClick",
+        "item_type": "("
+      },
+      {
+        "item_name": "rightButtonProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "rightButtonProps.label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "rightButtonProps.onClick",
+        "item_type": "("
+      }
+    ]
+  },
+  {
+    "DS_name": "NpBaseScreen",
+    "optional_tags_keywords": {
+      "total_button": ["小計", "合計ボタン", "total button"],
+      "loading": ["ローディング", "loading", "読み込み中"],
+      "error_modal": ["エラーモーダル", "error modal", "エラーダイアログ"]
+    },
+    "DS_items": [
+      {
+        "item_name": "headerProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "headerProps.type",
+        "item_type": "HeaderType"
+      },
+      {
+        "item_name": "headerProps.title",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "useBottomBar",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "bottomBarProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "bottomBarProps.isBackButtonEnable",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "bottomBarProps.onClickBackButton",
+        "item_type": "(("
+      },
+      {
+        "item_name": "bottomBarProps.isHomeButtonEnable",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "bottomBarProps.onClickHomeButton",
+        "item_type": "("
+      },
+      {
+        "item_name": "bottomBarProps.isMenuButtonEnable",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "bottomBarProps.onClickMenuButton",
+        "item_type": "("
+      },
+      {
+        "item_name": "bottomBarProps.isEnableSearchButton",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "bottomBarProps.onClickSearchButton",
+        "item_type": "("
+      },
+      {
+        "item_name": "bottomBarProps.isEnableTotalButton",
+        "item_type": "Boolean = false [optional: total_button]"
+      },
+      {
+        "item_name": "bottomBarProps.onClickTotalButton",
+        "item_type": "( [optional: total_button]"
+      },
+      {
+        "item_name": "loadingPopupProps",
+        "item_type": " - [optional: loading]"
+      },
+      {
+        "item_name": "loadingPopupProps.title",
+        "item_type": "String = \"\" [optional: loading]"
+      },
+      {
+        "item_name": "loadingPopupProps.label",
+        "item_type": "String = \"\" [optional: loading]"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false [optional: loading]"
+      },
+      {
+        "item_name": "isVisibleErrorModal",
+        "item_type": "Boolean = false [optional: error_modal]"
+      },
+      {
+        "item_name": "customLoadingContent",
+        "item_type": "@Composable (() -> Unit)? = null [optional: loading]"
+      },
+      {
+        "item_name": "halfModalProps",
+        "item_type": " - [optional: error_modal]"
+      },
+      {
+        "item_name": "halfModalProps.title",
+        "item_type": "String [optional: error_modal]"
+      },
+      {
+        "item_name": "halfModalProps.onDismiss",
+        "item_type": "( [optional: error_modal]"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable ColumnScope.() -> Unit [optional]"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpDivider",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpDividerType = NpDividerType.HORIZONTAL"
+      },
+      {
+        "item_name": "color",
+        "item_type": "NpDividerColor = NpDividerColor.GREY"
+      },
+      {
+        "item_name": "weight",
+        "item_type": "NpDividerWeight = NpDividerWeight.MEDIUM"
+      },
+      {
+        "item_name": "hasPadding",
+        "item_type": "Boolean = false"
+      }
+    ]
+  },
+  {
+    "DS_name": "color",
+    "DS_items": [
+      {
+        "item_name": "color",
+        "item_type": "NpDividerColor"
+      }
+    ]
+  },
+  {
+    "DS_name": "backgroundColor",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpOverlayMaskColorType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpScreenHeader",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "HeaderType"
+      },
+      {
+        "item_name": "title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "rightButtonProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "rightButtonProps.buttonType",
+        "item_type": "NpHeaderButtonType = NpHeaderButtonType.BUTTON"
+      },
+      {
+        "item_name": "rightButtonProps.label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "rightButtonProps.labelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightButtonProps.labelColorAlt",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightButtonProps.isEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "rightButtonProps.onClick",
+        "item_type": "("
+      },
+      {
+        "item_name": "leftButtonProps",
+        "item_type": " - "
+      },
+      {
+        "item_name": "leftButtonProps.buttonType",
+        "item_type": "NpHeaderButtonType = NpHeaderButtonType.BUTTON"
+      },
+      {
+        "item_name": "leftButtonProps.label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "leftButtonProps.labelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "leftButtonProps.labelColorAlt",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "leftButtonProps.isEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "leftButtonProps.onClick",
+        "item_type": "("
+      },
+      {
+        "item_name": "dotMenuProps",
+        "item_type": "(() -> Unit)? = null"
+      },
+      {
+        "item_name": "hasDivider",
+        "item_type": "Boolean = false"
+      }
+    ]
+  },
+  {
+    "DS_name": "ScreenHeaderController",
+    "DS_items": [
+      {
+        "item_name": "state",
+        "item_type": " - "
+      },
+      {
+        "item_name": "state.type",
+        "item_type": "HeaderType"
+      },
+      {
+        "item_name": "state.title",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "state.dotMenuProps",
+        "item_type": "(("
+      }
+    ]
+  },
+  {
+    "DS_name": "getThumbColor",
+    "DS_items": []
+  },
+  {
+    "DS_name": "NpScrollableLazyColumn",
+    "DS_items": [
+      {
+        "item_name": "modifier",
+        "item_type": "Modifier = Modifier"
+      },
+      {
+        "item_name": "state",
+        "item_type": "LazyListState = rememberLazyListState()"
+      },
+      {
+        "item_name": "contentPadding",
+        "item_type": "PaddingValues = PaddingValues(0.dp)"
+      },
+      {
+        "item_name": "verticalArrangement",
+        "item_type": "Arrangement.Vertical = Arrangement.Top"
+      },
+      {
+        "item_name": "horizontalAlignment",
+        "item_type": "Alignment.Horizontal = Alignment.Start"
+      },
+      {
+        "item_name": "userScrollEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "content",
+        "item_type": "LazyListScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpScrollableLazyRow",
+    "DS_items": [
+      {
+        "item_name": "modifier",
+        "item_type": "Modifier = Modifier"
+      },
+      {
+        "item_name": "state",
+        "item_type": "LazyListState = rememberLazyListState()"
+      },
+      {
+        "item_name": "contentPadding",
+        "item_type": "PaddingValues = PaddingValues(0.dp)"
+      },
+      {
+        "item_name": "horizontalArrangement",
+        "item_type": "Arrangement.Horizontal = Arrangement.Start"
+      },
+      {
+        "item_name": "verticalAlignment",
+        "item_type": "Alignment.Vertical = Alignment.Top"
+      },
+      {
+        "item_name": "userScrollEnabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "content",
+        "item_type": "LazyListScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpSectionTitle",
+    "DS_items": [
+      {
+        "item_name": "leftLabel",
+        "item_type": "String"
+      },
+      {
+        "item_name": "leftLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "rightLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "subLeftLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "subLeftLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "subRightLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "subRightLabelColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpBottomNavigationBar",
+    "DS_items": [
+      {
+        "item_name": "destinations[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "destinations[要素分].featureRoot",
+        "item_type": "String"
+      },
+      {
+        "item_name": "destinations[要素分].screenRoute",
+        "item_type": "String"
+      },
+      {
+        "item_name": "destinations[要素分].selectedIcon",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "destinations[要素分].unselectedIcon",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "destinations[要素分].iconTextId",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "destinations[要素分].useCountBadge",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "destinations[要素分].count",
+        "item_type": "Int = 0"
+      },
+      {
+        "item_name": "currentDestination",
+        "item_type": "NavDestination?"
+      },
+      {
+        "item_name": "onIconClick",
+        "item_type": "(index: Int) -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpPagination",
+    "DS_items": [
+      {
+        "item_name": "totalPageNumber",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "currentPage",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onPageChange",
+        "item_type": "(Int) -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTab",
+    "DS_items": [
+      {
+        "item_name": "options[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "options[要素分].title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "options[要素分].notice",
+        "item_type": "Int? = null"
+      },
+      {
+        "item_name": "options[要素分].enabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "options[要素分].hasInfo",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "selectedIndex",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "(Int) -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpToggleTab",
+    "DS_items": [
+      {
+        "item_name": "options",
+        "item_type": "List&lt;String&gt;"
+      },
+      {
+        "item_name": "selectedIndex",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "(Int) -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpBottomSheet",
+    "DS_items": [
+      {
+        "item_name": "isVisible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onDismiss",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "isModal",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "initialExpand",
+        "item_type": "NpSheetValue = NpSheetValue.PARTIALLY_EXPANDED"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable ColumnScope.() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpGlobalBottomSheetHost",
+    "DS_items": []
+  },
+  {
+    "DS_name": "NpGlobalDialogHost",
+    "DS_items": []
+  },
+  {
+    "DS_name": "NpGifImage",
+    "DS_items": [
+      {
+        "item_name": "drawableRes",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "modifier",
+        "item_type": "Modifier = Modifier"
+      },
+      {
+        "item_name": "contentDescription",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "contentScale",
+        "item_type": "ContentScale = ContentScale.Fit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpHalfModal",
+    "DS_items": [
+      {
+        "item_name": "props",
+        "item_type": " - "
+      },
+      {
+        "item_name": "props.title",
+        "item_type": "String"
+      },
+      {
+        "item_name": "props.isVisible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "props.canShowCloseButton",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "props.content",
+        "item_type": " - "
+      },
+      {
+        "item_name": "props.content.text",
+        "item_type": "String"
+      },
+      {
+        "item_name": "props.content.buttons",
+        "item_type": " - "
+      },
+      {
+        "item_name": "props.content.buttons[0].label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "props.content.buttons[0].type",
+        "item_type": "NpButtonType"
+      },
+      {
+        "item_name": "props.content.buttons[0].onClick",
+        "item_type": "("
+      }
+    ]
+  },
+  {
+    "DS_name": "NpHalfSheet",
+    "DS_items": [
+      {
+        "item_name": "useDivider",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "buttons",
+        "item_type": " - "
+      },
+      {
+        "item_name": "buttons[index].type",
+        "item_type": "NpButtonType"
+      },
+      {
+        "item_name": "buttons[index].label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "buttons[index].enabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "buttons[index].onClick",
+        "item_type": "("
+      }
+    ]
+  },
+  {
+    "DS_name": "NpInstructions",
+    "DS_items": [
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "type",
+        "item_type": "NpInstructionsType"
+      },
+      {
+        "item_name": "type.leftIcon",
+        "item_type": "ComposablePainter? = null"
+      },
+      {
+        "item_name": "type.rightIcon",
+        "item_type": "ComposablePainter? = null"
+      },
+      {
+        "item_name": "type.background",
+        "item_type": "Color"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpLoadingPopup",
+    "DS_items": [
+      {
+        "item_name": "props",
+        "item_type": " - "
+      },
+      {
+        "item_name": "props.title",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "props.label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "isVisible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "customLoadingContent",
+        "item_type": "@Composable (() -> Unit)? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpPopup",
+    "DS_items": [
+      {
+        "item_name": "isVisible",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onDismiss",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "canDismissByBackgroundTap",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "animationType",
+        "item_type": "AnimationType? = null"
+      },
+      {
+        "item_name": "content",
+        "item_type": "@Composable () -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagAuto",
+    "DS_items": [
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagComment",
+    "DS_items": [
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagCompany",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpCompanyType"
+      },
+      {
+        "item_name": "type.image",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagConvenienceLocker",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpConvenienceLockerType"
+      },
+      {
+        "item_name": "type.image",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagDigitalKey",
+    "DS_items": [
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagHouseNum",
+    "DS_items": [
+      {
+        "item_name": "count",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagInfo",
+    "DS_items": [
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagInstruction",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpInstructionType"
+      },
+      {
+        "item_name": "type.image",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagKM",
+    "DS_items": []
+  },
+  {
+    "DS_name": "NpTagLinking",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": " - "
+      },
+      {
+        "item_name": "type.props",
+        "item_type": "TagBaseProps"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagNotification",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTagNotificationType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "count",
+        "item_type": "Int = 0"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTagNotificationType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagLoadingPositionShelf",
+    "DS_items": [
+      {
+        "item_name": "code1",
+        "item_type": "String"
+      },
+      {
+        "item_name": "code2",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagMap",
+    "DS_items": [
+      {
+        "item_name": "hasMapLocation",
+        "item_type": "Boolean"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "hasMapLocation",
+        "item_type": "Boolean"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagMethod",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpMethodType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "isMultiple",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagNotificationType",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpNotificationType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpNotificationType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagPackageNum",
+    "DS_items": [
+      {
+        "item_name": "count",
+        "item_type": "String"
+      },
+      {
+        "item_name": "maxCount",
+        "item_type": "String"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagPackageStatus",
+    "DS_items": []
+  },
+  {
+    "DS_name": "NpTagPaymentMethod",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpPaymentMethodType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagPickupFlag",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpPickupFlagType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagProductType",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpProductType"
+      },
+      {
+        "item_name": "type.image",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagReturnPackageStatus",
+    "DS_items": [
+      {
+        "item_name": "packageStatusType",
+        "item_type": " - "
+      },
+      {
+        "item_name": "packageStatusType.props",
+        "item_type": "TagBaseProps"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagRouteState",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpRouteStateType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int, val image: Int? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagSize",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpSizeType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagSpecialMode",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpSpecialModeType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagSplitDelivery",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpSplitDeliveryType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagStatus",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpStatusType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpStatusType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagStopByFlag",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpStopByFlagType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagTaskType",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTaskType"
+      },
+      {
+        "item_name": "count",
+        "item_type": "Int? = null"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTaskType"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagTime",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTimeType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "startTimeString",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "endTimeString",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  },
+  {
+    "DS_name": "tokens",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTimeType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      },
+      {
+        "item_name": "timeString",
+        "item_type": "String?"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpTagTransfer",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpTransferType"
+      },
+      {
+        "item_name": "type.label",
+        "item_type": "Int"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpButton",
+    "DS_items": [
+      {
+        "item_name": "type",
+        "item_type": "NpButtonType"
+      },
+      {
+        "item_name": "onClick",
+        "item_type": "() -> Unit"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "labelColor",
+        "item_type": "NpTextColor? = null"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpButtonSize = NpButtonSize.MEDIUM"
+      },
+      {
+        "item_name": "isLoading",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "leftIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "leftIconColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "rightIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "rightIconColor",
+        "item_type": "NpTextColor = NpTextColor.BLACK"
+      },
+      {
+        "item_name": "badgeCount",
+        "item_type": "Int = 0"
+      },
+      {
+        "item_name": "contentType",
+        "item_type": "NpButtonContentType = ICON_LABEL"
+      },
+      {
+        "item_name": "leftLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "leftLabelColor",
+        "item_type": "NpTextColor? = null"
+      },
+      {
+        "item_name": "rightLabel",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "rightLabelColor",
+        "item_type": "NpTextColor? = null"
+      },
+      {
+        "item_name": "customTextStyle",
+        "item_type": "NpTextStyle? = null"
+      },
+      {
+        "item_name": "customShape",
+        "item_type": "Shape? = null"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpButtonList",
+    "DS_items": [
+      {
+        "item_name": "buttons[要素分]",
+        "item_type": " - "
+      },
+      {
+        "item_name": "buttons[要素分].type",
+        "item_type": "NpButtonType"
+      },
+      {
+        "item_name": "buttons[要素分].label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "buttons[要素分].onClick",
+        "item_type": "() -> Unit"
+      }
+    ]
+  },
+  {
+    "DS_name": "NpCustomKeyboardInput",
+    "DS_items": [
+      {
+        "item_name": "value",
+        "item_type": "TextFieldValue"
+      },
+      {
+        "item_name": "label",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "placeholder",
+        "item_type": "String = \"\""
+      },
+      {
+        "item_name": "keyPattern",
+        "item_type": "NpKeyPattern"
+      },
+      {
+        "item_name": "keyPattern.keyboardTypes[要素分]",
+        "item_type": "List&lt;NpKeyboardType&gt;"
+      },
+      {
+        "item_name": "keyPattern.kanaPunctuationType",
+        "item_type": "KanaPunctuationType"
+      },
+      {
+        "item_name": "keyPattern.numberPunctuationType",
+        "item_type": "NumberPunctuationType"
+      },
+      {
+        "item_name": "onValueChange",
+        "item_type": "(TextFieldValue) -> Unit"
+      },
+      {
+        "item_name": "defaultType",
+        "item_type": "NpKeyboardType? = null"
+      },
+      {
+        "item_name": "defaultType.label",
+        "item_type": "String"
+      },
+      {
+        "item_name": "onOk",
+        "item_type": "() -> Unit = {}"
+      },
+      {
+        "item_name": "size",
+        "item_type": "NpInputSize = NpInputSize.FULL"
+      },
+      {
+        "item_name": "isDefaultFocus",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "singleLine",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "minLines",
+        "item_type": "Int = 1"
+      },
+      {
+        "item_name": "maxLength",
+        "item_type": "Int? = null"
+      },
+      {
+        "item_name": "isError",
+        "item_type": "Boolean = false"
+      },
+      {
+        "item_name": "enabled",
+        "item_type": "Boolean = true"
+      },
+      {
+        "item_name": "errorMessage",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "leftAssistant",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "leftIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "leftIconClick",
+        "item_type": "() -> Unit = {}"
+      },
+      {
+        "item_name": "rightAssistant",
+        "item_type": "String? = null"
+      },
+      {
+        "item_name": "rightIcon",
+        "item_type": "Painter? = null"
+      },
+      {
+        "item_name": "rightIconClick",
+        "item_type": "() -> Unit = {}"
+      }
+    ]
+  }
+]

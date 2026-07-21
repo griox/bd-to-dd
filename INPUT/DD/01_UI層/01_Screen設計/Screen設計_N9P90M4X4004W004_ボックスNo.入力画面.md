@@ -1,0 +1,103 @@
+# Screen設計 N9P90M4X4004W004_ボックスNo.入力画面
+
+- 関連ドキュメント
+  - [外部設計書_N9P90M4X4004W004_ボックスNo.入力画面](../N9P90M4X4004W004_ボックスNo.入力画面.md)
+
+## 1. Composable関数設計
+
+### 1.1. 関数名
+
+`X4004W004Screen(...)`
+
+### 1.2. 入力パラメータ
+
+|項目名|型|説明|
+|---|---|---|
+|screenUiData|[X4004W004ScreenUiData](../../04_Class設計/DataClass設計_X4004W004ScreenUiData.md)|画面のUI状態を操作する画面固有のViewModelクラスのUIData|
+|onClickKakutei|Unit|キーボードの「OK」ボタン押下時|
+|onClickOkModal|Unit|モーダルの「OK」ボタン押下時|
+|onClickTotalButton|Unit|「小計」ボタン押下時|
+|onClickSearchButton|Unit|「検索」ボタン押下時|
+
+### 1.3. 画面構成（画面を構成するComposable関数）
+
+|Composable関数名|種別|内容・役割|備考|
+|---|---|---|---|
+|NpBaseScreen|DS|Screen基底クラス|-|
+|NpPinnedArea|DS|固定表示のセクションタイトル|-|
+|NpText|DS|説明|-|
+|NpInput|DS|ボックスNo.|-|
+|NpKeyboard|DS|キーボード|-|
+|NpHalfModal|DS|モーダル表示|-|
+
+### 1.4. Composableに渡す引数
+
+#### 1.4.1 NpBaseScreen
+
+|引数名|設定値|備考|
+|---|---|---|
+|headerProps|-|ヘッダに渡す情報|
+|headerProps.type|HeaderType.LEFT_TITLE|-|
+|headerProps.title|MP90ARIM40009|-|
+|useBottomBar|true|フッタの表示フラグ|
+|bottomBarProps|-|フッタの設定情報|
+|bottomBarProps.isBackButtonEnable|true|「戻る」ボタンの活性状態|
+|bottomBarProps.onClickBackButton|null|「戻る」ボタン押下時の処理（デフォルトの戻る処理）|
+|bottomBarProps.isHomeButtonEnable|true|「ホーム」ボタンの活性状態|
+|bottomBarProps.onClickHomeButton|null|「ホーム」ボタン押下時の処理（デフォルトのホーム処理）|
+|bottomBarProps.isMenuButtonEnable|true|「メニュー」ボタンの活性状態|
+|bottomBarProps.onClickMenuButton|null|「メニュー」ボタン押下時の処理(デフォルトの戻る処理)|
+|bottomBarProps.isEnableTotalButton|true|「小計」ボタンの活性状態|
+|bottomBarProps.onClickTotalButton|onClickTotalButton|「小計」ボタン押下時|
+|bottomBarProps.isEnableSearchButton|true|「検索」ボタンの活性状態|
+|bottomBarProps.onClickSearchButton|onClickSearchButton|「検索」ボタン押下時の処理|
+
+#### 1.4.2 NpPinnedArea
+
+|引数名|設定値|備考|
+|---|---|---|
+|topLineItemProps|List&lt;NpPinnedAreaLineItem&gt;|行数 : 2|
+|topLineItemProps[0].leftLabel|screenUiData.tosaiSbtNm|-|
+|topLineItemProps[1].rightLabel|screenUiData.tourokuKensu|-|
+|bottomLineItemProps|List&lt;NpPinnedAreaLineItem&gt;|行数 : 1|
+|bottomLineItemProps[0].leftLabel|screenUiData.kenme|-|
+
+#### 1.4.3 NpText
+
+|引数名|設定値|備考|
+|---|---|---|
+|text|MP90ARIM40041|-|
+|style|NpTextStyle.BODY_MEDIUM|-|
+|textAlign|TextAlign.Center|-|
+
+#### 1.4.4 NpInput
+
+|引数名|設定値|備考|
+|---|---|---|
+|label|MP90ARIM40008|-|
+|value|screenUiData.boxNo|-|
+|placeholder|MP90ARIM40011|-|
+|maxLength|7|-|
+
+#### 1.4.5 NpKeyboard
+
+|引数名|設定値|備考|
+|---|---|---|
+|keyPattern|NpKeyPattern.KEY_TYPE_NUM|-|
+|defaultType|NpKeyboardType.NUMBER|-|
+|onOk|onClickKakutei|-|
+
+#### 1.4.6 NpHalfModal
+
+|引数名|設定値|備考|
+|---|---|---|
+|props|-|-|
+|props.title|screenUiData.halfModalTitle|-|
+|props.isVisible|screenUiData.isVisibleErrorModal|-|
+|props.canShowCloseButton|true|-|
+|props.content|[TmsrvAbnormalHkHalfModalData](../04_Composable設計/Composable設計_TmsrvAbnormalHkHalfModal.md#1-関数名)|-|
+|props.content.text|screenUiData.halfModalMsg|-|
+|props.content.buttons|-|-|
+|props.content.buttons[0].label|MP90ARIM40074|-|
+|props.content.buttons[0].type|NpButtonType.PRIMARY|-|
+|props.content.buttons[0].onClick|onClickOkModal|-|

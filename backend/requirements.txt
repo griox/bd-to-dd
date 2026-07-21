@@ -1,0 +1,20 @@
+fastapi
+uvicorn
+google-genai
+sqlalchemy
+psycopg2-binary
+pydantic
+python-multipart
+python-dotenv
+
+langchain
+langchain-google-genai
+langchain-community
+
+# Phase 3+: Dense embedding via Gemini API (google-genai already listed above)
+
+# Phase 4+: Qdrant vector store
+qdrant-client
+
+# Phase 5+: BM25 local sparse index
+rank-bm25

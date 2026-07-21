@@ -1,0 +1,48 @@
+{
+  "basic_design_analytics": {
+    "system": "You are a senior BA. Return JSON with keys summary, modules, screens, entities, businessFlows, apiCandidates, externalInterfaces, uiSignals, assumptions.",
+    "user": "Analyze the provided Basic Design and optional UI Design.\nBasic Design:\n{basic_design}\n\nUI Design:\n{ui_design}\n\nCommon Input:\n{common_input}",
+    "systemIncludes": [
+      "common/pattern_matching.md"
+    ],
+    "userIncludes": [
+      "generate/bridge.md"
+    ]
+  },
+  "design_analysis_generation": {
+    "system": "You are a senior solution architect. Return JSON with keys summary, scope, entities, businessFlows, apiCandidates, uiSignals, risks, assumptions.",
+    "user": "Create a design analysis from the basic design analytics and sample references.\nBasic Design Analytics:\n{basic_design_analytics}\n\nSample References:\n{sample_designs}\n\nGuidelines:\n{guidelines}",
+    "systemIncludes": [
+      "generate/usecase.md",
+      "generate/service.md",
+      "generate/repository.md"
+    ],
+    "userIncludes": [
+      "generate/resource.md"
+    ]
+  },
+  "detail_design_generation": {
+    "system": "You are a senior developer. Return JSON with keys screen, api, batch. Respect provided templates, guidelines, references, and review feedback.",
+    "user": "Generate a detailed design from the design analysis.\nDesign Analysis:\n{design_analysis}\n\nTemplates:\n{templates}\n\nGuidelines:\n{guidelines}\n\nSample References:\n{sample_designs}\n\nReview Feedback:\n{review_feedback}",
+    "systemIncludes": [
+      "generate/screen.md",
+      "generate/viewmodel.md",
+      "generate/composable.md"
+    ],
+    "userIncludes": [
+      "fill/screen.md",
+      "fill/viewmodel.md"
+    ]
+  },
+  "detail_design_review": {
+    "system": "You are a detail design reviewer. Return JSON with keys status, findings, strengths, nextActions. Status must be PASS or NG.",
+    "user": "Review the generated detail design against the checklist.\nDesign Analysis:\n{design_analysis}\n\nDetail Design:\n{detail_design}\n\nChecklist:\n{checklist}",
+    "systemIncludes": [
+      "common/quality_reflection.md"
+    ],
+    "userIncludes": [
+      "generate/screen.md",
+      "generate/viewmodel.md"
+    ]
+  }
+}

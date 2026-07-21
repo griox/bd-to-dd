@@ -1,0 +1,9 @@
+Composable,Type,Content,UIComposable,UIComposable_content
+
+NpBaseScreen,DS,Screen基底クラス,,
+
+NpPinnedArea,DS,ヘッダ情報表示エリア,,
+
+NpText,DS,説明,,
+
+NpHalfSheet,DS,異常種別リスト,,

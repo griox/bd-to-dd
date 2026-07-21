@@ -1,0 +1,152 @@
+{
+  "create_idea_file": {
+    "name": "create-idea-file",
+    "sourceFile": "create-idea-file.md",
+    "stage": "idea",
+    "purpose": "Create the project idea input used before requirements, master design, BD, and DD.",
+    "inputs": ["structured project info", "tech stack gaps", "project constraints"],
+    "outputs": ["idea.md", "confirmed tech stack", "senior review decision points"],
+    "executionSteps": [
+      "Identify missing stack and confirmation needs",
+      "Create project planning folder",
+      "Write idea.md",
+      "Perform senior review across stack, scale, feature gaps, and architecture",
+      "Loop on user decisions until confirmed"
+    ],
+    "templateSections": [
+      "Project goal",
+      "Tech Stack",
+      "Main features",
+      "Users and roles",
+      "Constraints",
+      "Next steps",
+      "Senior Review decision points"
+    ],
+    "selfReviewChecklist": [
+      "Tech stack gaps are explicit and decision-ready",
+      "Scale risks are called out early",
+      "Feature gaps include operational concerns such as audit, admin, and async jobs",
+      "Architecture concerns include API versioning and deployment parity"
+    ]
+  },
+  "write_master_design": {
+    "name": "write-master-design",
+    "sourceFile": "write-master-design.md",
+    "stage": "master_design",
+    "purpose": "Create the north-star architecture document that keeps BD and DD consistent.",
+    "inputs": ["idea.md", "requirements.md"],
+    "outputs": ["master-design.md", "module map", "scale tiers", "ADRs", "API standards"],
+    "executionSteps": [
+      "Gather actors, domains, scale targets, stack, and constraints",
+      "Create system context diagram",
+      "Create use case diagrams per service",
+      "Define high-level module map and dependency rules",
+      "Define three scale tiers with upgrade triggers",
+      "Write architecture decisions",
+      "Define data architecture and API contract standards",
+      "Run human review gate"
+    ],
+    "templateSections": [
+      "System Vision",
+      "System Context",
+      "Use Case Diagrams",
+      "Module Architecture",
+      "Scale Architecture",
+      "Core Architecture Decisions",
+      "Technology Stack",
+      "Data Architecture",
+      "API Contract Standards",
+      "Security Architecture",
+      "Observability Strategy",
+      "Deployment Architecture",
+      "Scale-up Triggers",
+      "Evolution Roadmap",
+      "Open Decisions",
+      "Non-Negotiables"
+    ],
+    "selfReviewChecklist": [
+      "All 16 sections are present and no placeholders remain",
+      "System context reflects actual actors and external systems",
+      "Module boundaries have no circular dependencies",
+      "Each entity is owned by exactly one module",
+      "Scale tiers have concrete metric-based upgrade triggers",
+      "API Contract Standards define response format, status codes, pagination, and versioning",
+      "Non-Negotiables are specific and enforceable"
+    ]
+  },
+  "write_bd": {
+    "name": "write-bd",
+    "sourceFile": "write-bd.md",
+    "stage": "basic_design",
+    "purpose": "Create or normalize Basic Design content before detail design generation.",
+    "inputs": ["requirements.md", "idea.md", "raw project description", "master-design.md if available"],
+    "outputs": ["BD.md", "module breakdown", "screen flow", "database overview", "common policies"],
+    "executionSteps": [
+      "Gather requirements, idea, and master design context",
+      "Decompose the system into bounded modules",
+      "Create database overview from DDL when available",
+      "Define common policies",
+      "Write BD.md",
+      "Run human review gate"
+    ],
+    "templateSections": [
+      "System Overview",
+      "Actors",
+      "Module Breakdown",
+      "Screen Flow",
+      "Database Overview",
+      "External Interfaces",
+      "Common Policies",
+      "Non-Functional Requirements Approach",
+      "Open Issues",
+      "Change Log"
+    ],
+    "selfReviewChecklist": [
+      "All 9 sections are present and no placeholders remain",
+      "Module breakdown aligns with Master Design when available",
+      "Every module has Responsibility, Screens/Pages, API Endpoints, and Depends On",
+      "Database overview covers designed tables and notes DDL source when available",
+      "External interfaces include provider, purpose, and auth method",
+      "Common policies cover auth, errors, pagination, logging, timezone, and locale",
+      "Open issues are specific, owned, and actionable"
+    ]
+  },
+  "write_dd": {
+    "name": "write-dd",
+    "sourceFile": "write-dd.md",
+    "stage": "detail_design",
+    "purpose": "Create Detail Design content aligned with BD, UI Design, templates, references, and review gates.",
+    "inputs": ["BD.md", "module or feature scope", "UI design", "master-design.md if available", "DDL if available"],
+    "outputs": ["DD_{module}.md", "function specs", "DB table detail", "API detailed specs", "test cases"],
+    "executionSteps": [
+      "Read BD and identify scope",
+      "Design each function/endpoint",
+      "DB table detailed design",
+      "API detailed specification",
+      "Sequence diagram",
+      "Validation rules",
+      "Test cases",
+      "Write DD_{module}.md",
+      "Run human review gate"
+    ],
+    "templateSections": [
+      "Scope",
+      "Functions",
+      "Database Design",
+      "Sequence Diagrams",
+      "Validation Rules",
+      "Test Cases",
+      "Change Log"
+    ],
+    "selfReviewChecklist": [
+      "All 7 sections are present and no placeholders remain",
+      "Every function/endpoint has Trigger, Auth, Processing Logic, Input, Output, Errors",
+      "Processing Logic is explicit pseudocode without etc. or ambiguous branches",
+      "DB tables match DDL source when schema exists",
+      "Sequence diagrams cover complex multi-step flows",
+      "Validation rules cover every input field per function",
+      "Test cases include happy path, boundary, unauthorized, not found, and conflict",
+      "API specs are consistent with Master Design Section 9 when available"
+    ]
+  }
+}

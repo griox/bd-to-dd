@@ -1,0 +1,9 @@
+Composable,Type,Content,UIComposable,UIComposable_content
+
+NpBaseScreen,DS,Screen基底クラス,,
+
+NpList,DS,小計明細・搭載種別・小計件数,,
+
+NpHalfSheet,DS,「継続」「完了」ボタン,,
+
+NpHalfModal,DS,モーダル表示,,
