@@ -22,3 +22,5 @@ backend/test.db
 frontend/node_modules/
 frontend/.next/
 .worktrees/
+.doc
+.superpowers
