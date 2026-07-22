@@ -70,7 +70,7 @@ class GenerationService:
         if isinstance(value, (list, tuple)):
             return "\n".join(self._stringify_prompt_value(item) for item in value)
         if isinstance(value, dict):
-            return json.dumps(value, indent=2)
+            return json.dumps(value, indent=2, ensure_ascii=False)
         return str(value)
 
     def _format_common_guidance(self, common_input: Dict[str, Any]) -> str:
@@ -141,6 +141,8 @@ class GenerationService:
     def _normalize_basic_design_analytics(
         self, payload: Dict[str, Any]
     ) -> Dict[str, Any]:
+        if not isinstance(payload, dict):
+            payload = {}
         normalized = dict(payload)
         normalized["summary"] = self._stringify_prompt_value(
             payload.get("summary", "")
@@ -159,6 +161,8 @@ class GenerationService:
         return normalized
 
     def _normalize_design_analysis(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(payload, dict):
+            payload = {}
         normalized = dict(payload)
         normalized["summary"] = self._stringify_prompt_value(
             payload.get("summary", "")
@@ -176,6 +180,8 @@ class GenerationService:
         return normalized
 
     def _normalize_review(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(payload, dict):
+            payload = {}
         normalized = dict(payload)
         if "status" in payload:
             status = self._stringify_prompt_value(payload["status"]).upper()
@@ -198,6 +204,8 @@ class GenerationService:
         return normalized
 
     def _normalize_detail_design(self, payload: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
+        if not isinstance(payload, dict):
+            payload = {}
         normalized: Dict[str, Dict[str, str]] = {}
         for module_name in ["screen", "api", "batch"]:
             module_value = payload.get(module_name, {})
@@ -831,7 +839,7 @@ class GenerationService:
             basic_design_analytics = self.basic_design_analytics_chain.invoke(
                 {
                     **context,
-                    "common_input": json.dumps(context["common_input"]),
+                    "common_input": json.dumps(context["common_input"], ensure_ascii=False),
                 }
             )
         except Exception:

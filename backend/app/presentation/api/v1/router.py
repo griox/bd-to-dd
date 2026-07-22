@@ -1,3 +1,5 @@
+import csv
+import io
 import json
 import uuid
 from datetime import datetime, timezone
@@ -95,7 +97,7 @@ def _set_job_progress(job, db, status: str, step: str, summary: str) -> None:
     payload = _decode_job_result(job.result)
     payload["generationProgress"] = _progress_payload(status, step, summary)
     job.status = status
-    job.result = json.dumps(payload)
+    job.result = json.dumps(payload, ensure_ascii=False)
     db.commit()
 
 
@@ -122,7 +124,7 @@ def _run_generation_job(job_id: str, project_id: str) -> None:
 
         update_status("analyzing")
         result = generation_service.run(project_id, job_id, basic_design, ui_design, update_status)
-        job.result = json.dumps(result)
+        job.result = json.dumps(result, ensure_ascii=False)
         db.commit()
     except Exception as exc:
         if job:
@@ -181,7 +183,7 @@ def _run_detail_design_job(job_id: str, project_id: str) -> None:
             "Detail design generated and auto-review completed.",
         )
         job.status = "needs_manual_review"
-        job.result = json.dumps(result)
+        job.result = json.dumps(result, ensure_ascii=False)
         db.commit()
     except Exception as exc:
         if job:
@@ -215,6 +217,36 @@ def create_project(req: ProjectCreate):
         }
     finally:
         db.close()
+
+
+def _csv_to_markdown(raw: str) -> str:
+    """Convert a raw CSV string to a Markdown table.
+
+    Falls back to the original text if the CSV is malformed or empty.
+    Strips UTF-8 BOM that Excel/Japanese tools often prepend.
+    """
+    raw = raw.lstrip("\ufeff")  # strip BOM (Excel UTF-8 with BOM)
+    try:
+        reader = csv.reader(io.StringIO(raw))
+        rows = [row for row in reader if any(cell.strip() for cell in row)]
+    except csv.Error:
+        return raw
+
+    if not rows:
+        return raw
+
+    header = rows[0]
+    col_count = len(header)
+    lines = [
+        "| " + " | ".join(header) + " |",
+        "| " + " | ".join(["---"] * col_count) + " |",
+    ]
+    for row in rows[1:]:
+        # pad or trim row to match header width
+        padded = row + [""] * (col_count - len(row))
+        lines.append("| " + " | ".join(padded[:col_count]) + " |")
+
+    return "\n".join(lines)
 
 
 def _read_uploaded_document(file: UploadFile, context: str):
@@ -253,9 +285,15 @@ def _read_uploaded_document(file: UploadFile, context: str):
             detail="Supported files are .md, .txt, .json, .csv, .png, .jpg, .jpeg, and .webp.",
         )
     try:
-        return data.decode("utf-8"), {"sourceType": "text", "extractionModel": None}
+        text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise HTTPException(status_code=400, detail="Text file must be UTF-8.") from exc
+
+    if suffix == ".csv":
+        text = _csv_to_markdown(text)
+        return text, {"sourceType": "text", "extractionModel": None, "converted": "csv_to_markdown"}
+
+    return text, {"sourceType": "text", "extractionModel": None}
 
 
 def _upload_document(project_id: str, kind: str, context: str, file: UploadFile):
@@ -424,7 +462,7 @@ def submit_designer_review(
                 update_status=update_status,
             )
 
-        job.result = json.dumps(current_result)
+        job.result = json.dumps(current_result, ensure_ascii=False)
         db.commit()
         return {"data": {"status": job.status, "result": current_result}}
     finally:
@@ -473,7 +511,7 @@ def submit_analysis_review(
                 "Analysis approved. Detail design generation is queued.",
             )
             job.status = "generating_dd"
-            job.result = json.dumps(current_result)
+            job.result = json.dumps(current_result, ensure_ascii=False)
             db.commit()
             background_tasks.add_task(_run_detail_design_job, job_id, project_id)
             return {"data": {"status": job.status, "result": current_result}}
@@ -492,7 +530,7 @@ def submit_analysis_review(
                 update_status=update_status,
             )
 
-        job.result = json.dumps(current_result)
+        job.result = json.dumps(current_result, ensure_ascii=False)
         db.commit()
         return {"data": {"status": job.status, "result": current_result}}
     finally:
