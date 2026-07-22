@@ -175,9 +175,13 @@ class ChunkingService:
             section_path_tuple: Tuple[str, ...] = (doc_id, section_key)
             section_path_str = f"{doc_id} > {section_key}"
 
+            parent_content = _compact_parent_content(section_content)
+            if not parent_content.strip():
+                continue
+
             parent_chunk = KnowledgeChunk(
                 id=parent_id,
-                content=_compact_parent_content(section_content),
+                content=parent_content,
                 metadata={
                     **base_metadata,
                     "section_path": section_path_str,
@@ -252,7 +256,7 @@ class ChunkingService:
         all_chunks: List[KnowledgeChunk] = []
         for sample in samples:
             all_chunks.extend(self.chunk_sample(sample, project_context))
-        return all_chunks
+        return [c for c in all_chunks if c.content and c.content.strip()]
 
     # ------------------------------------------------------------------
     # Legacy method kept for callers that still pass a flat detailDesign dict.

@@ -24,7 +24,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./INPUT:/app/INPUT:ro
+      - ./INPUT:/app/INPUT
       - backend_runtime:/runtime
     depends_on:
       - qdrant

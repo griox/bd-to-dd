@@ -44,8 +44,17 @@ def export_artifacts(project_id: str, job_id: str, payload: Dict[str, Any]) -> D
     job_dir = _job_dir(project_id, job_id)
     json_path = job_dir / "detail-design.json"
     markdown_path = job_dir / "detail-design.md"
-    json_path.write_text(json.dumps(payload, indent=2))
-    markdown_path.write_text(_to_markdown(payload))
+    json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
+    markdown_content = _to_markdown(payload)
+    markdown_path.write_text(markdown_content)
+
+    # Save a copy to INPUT/DD so it becomes a seed sample
+    from app.core.config import INPUT_ROOT_PATH
+    input_dd_dir = INPUT_ROOT_PATH / "DD"
+    if input_dd_dir.exists():
+        seed_path = input_dd_dir / f"generated_{job_id[:8]}.md"
+        seed_path.write_text(markdown_content)
+
     return {
         "jsonPath": str(json_path),
         "markdownPath": str(markdown_path),

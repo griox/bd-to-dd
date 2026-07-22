@@ -39,7 +39,7 @@ GEMINI_LLM_MODEL = normalize_llm_model(
 )
 LLM_API_KEY = GEMINI_LLM_API_KEY
 LLM_MODEL = GEMINI_LLM_MODEL
-MAX_REVIEW_ITERATIONS = int(os.getenv("MAX_REVIEW_ITERATIONS", "2"))
+MAX_REVIEW_ITERATIONS = int(os.getenv("MAX_REVIEW_ITERATIONS", "1"))
 
 # ---------------------------------------------------------------------------
 # Gemini Embedding (Phase 3+)

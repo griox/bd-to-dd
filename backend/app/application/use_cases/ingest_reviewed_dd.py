@@ -608,6 +608,14 @@ class KnowledgeBaseService:
                     "tags": ["generated", "designer-approved"],
                 },
             }
+            raw_sample = {
+                "id": content["id"],
+                "metadata": content["metadata"],
+                "content": json.dumps(content, ensure_ascii=False)
+            }
+            if hasattr(self.sample_loader, "append"):
+                self.sample_loader.append(raw_sample)
+
             sample = ReviewedDetailDesignSample(
                 id=content["id"],
                 content=json.dumps(content),
