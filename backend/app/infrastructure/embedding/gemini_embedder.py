@@ -77,13 +77,13 @@ class GeminiEmbeddingService:
             embeddings: List[List[float]] = []
             for start_index in range(0, len(texts), self._batch_size):
                 batch = texts[start_index : start_index + self._batch_size]
-                for attempt in range(2):
+                for attempt in range(4):
                     try:
                         embeddings.extend(self._embed_batch(client, batch))
                         break
                     except Exception as exc:
                         retry_delay = _rate_limit_retry_delay(exc)
-                        if retry_delay is None or attempt == 1:
+                        if retry_delay is None or attempt == 3:
                             raise
                         time.sleep(retry_delay)
             return embeddings
