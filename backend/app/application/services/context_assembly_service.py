@@ -30,8 +30,8 @@ class ContextAssemblyService:
 
         for candidate in candidates:
             parent_id = candidate.metadata.get("parent_chunk_id")
-            allow_parent_merge = bool(candidate.metadata.get("allow_parent_merge"))
-            if parent_id and (allow_parent_merge or candidate.metadata.get("is_leaf", True)):
+            allow_parent_merge = bool(candidate.metadata.get("allow_parent_merge", False))
+            if parent_id and allow_parent_merge:
                 if parent_id not in parent_ids:
                     parent_ids.append(parent_id)
             else:

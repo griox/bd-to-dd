@@ -61,10 +61,7 @@ class ExportServiceTest(unittest.TestCase):
             self.assertEqual(json.loads(Path(artifacts["jsonPath"]).read_text())["analysis"]["summary"], "Summary")
             markdown = Path(artifacts["markdownPath"]).read_text()
             self.assertIn("# Detail Design Artifact", markdown)
-            self.assertIn("## Screen Detail Design", markdown)
-            self.assertIn("|Composable Function|Type|Role|Notes|", markdown)
-            self.assertIn("|API / Endpoint|Method|Timing|Response Handling|", markdown)
-            self.assertIn("|State Name|Type|Initial Value|Update Timing|", markdown)
+            self.assertIn("## Detail Design", markdown)
             self.assertIn("NpBaseScreen", markdown)
             self.assertIn("/api/subtotal", markdown)
 
@@ -87,10 +84,10 @@ class ExportServiceTest(unittest.TestCase):
                 artifacts = export_artifacts("project-1", "job-2", payload)
 
             markdown = Path(artifacts["markdownPath"]).read_text()
-            self.assertIn("## Screen Detail Design", markdown)
-            self.assertIn("### UI Design", markdown)
+            self.assertIn("## Detail Design", markdown)
+            self.assertIn("01_UI_Design", markdown)
             self.assertIn("Simple UI section", markdown)
-            self.assertIn("### Business Logic", markdown)
+            self.assertIn("05_Business_Logic", markdown)
             self.assertIn("Missing event definition table", markdown)
 
 

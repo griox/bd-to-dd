@@ -39,7 +39,7 @@ GEMINI_LLM_MODEL = normalize_llm_model(
 )
 LLM_API_KEY = GEMINI_LLM_API_KEY
 LLM_MODEL = GEMINI_LLM_MODEL
-MAX_REVIEW_ITERATIONS = int(os.getenv("MAX_REVIEW_ITERATIONS", "1"))
+MAX_REVIEW_ITERATIONS = int(os.getenv("MAX_REVIEW_ITERATIONS", "2"))
 
 # ---------------------------------------------------------------------------
 # Gemini Embedding (Phase 3+)
@@ -76,5 +76,5 @@ BM25_TOP_K: int = int(os.getenv("BM25_TOP_K", "20"))
 # Retrieval (Phase 9+)
 # ---------------------------------------------------------------------------
 RETRIEVAL_MIN_TOP_K: int = int(os.getenv("RETRIEVAL_MIN_TOP_K", "3"))
-RETRIEVAL_MAX_TOP_K: int = int(os.getenv("RETRIEVAL_MAX_TOP_K", "8"))
-RETRIEVAL_SCORE_GAP: float = float(os.getenv("RETRIEVAL_SCORE_GAP", "0.15"))
+RETRIEVAL_MAX_TOP_K: int = int(os.getenv("RETRIEVAL_MAX_TOP_K", "3"))
+RETRIEVAL_SCORE_GAP: float = float(os.getenv("RETRIEVAL_SCORE_GAP", "0.10"))

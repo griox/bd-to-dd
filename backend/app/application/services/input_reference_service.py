@@ -84,7 +84,7 @@ class InputReferenceService:
         selected = [
             candidate
             for score, candidate in ranked
-            if score >= 0.18
+            if 0.18 <= score < 0.95
         ][:limit]
         if not selected:
             return self._empty_result()

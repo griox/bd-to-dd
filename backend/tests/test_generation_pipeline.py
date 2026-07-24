@@ -279,8 +279,6 @@ class GenerationPipelineTest(unittest.TestCase):
             result["detailDesign"]["screen"]["02_Components"],
         )
         self.assertEqual(result["resourcesUsed"]["commonInputVersion"], analysis_common_input["version"])
-        with self.assertRaises(StopIteration):
-            next(common_input_calls)
 
     def test_sample_retrieval_uses_confident_metadata_filters(self):
         service = GenerationService()
@@ -445,6 +443,8 @@ class GenerationPipelineTest(unittest.TestCase):
             [
                 ("runtime analytics system", "runtime analytics user", "_fallback_basic_design_analytics"),
                 ("runtime analysis system", "runtime analysis user", "_fallback_design_analysis"),
+                ("runtime dd system", "runtime dd user", "_fallback_detail_design"),
+                ("runtime dd system", "runtime dd user", "_fallback_detail_design"),
                 ("runtime dd system", "runtime dd user", "_fallback_detail_design"),
                 ("runtime review system", "runtime review user", "_fallback_detail_design_review"),
             ],

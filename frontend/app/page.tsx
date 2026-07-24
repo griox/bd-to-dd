@@ -726,6 +726,17 @@ export default function Home() {
   const generationPollRef = useRef<number | null>(null);
   const knowledgeBasePollRef = useRef<number | null>(null);
 
+  const [phase1Start, setPhase1Start] = useState<number | null>(null);
+  const [phase1End, setPhase1End] = useState<number | null>(null);
+  const [phase2Start, setPhase2Start] = useState<number | null>(null);
+  const [phase2End, setPhase2End] = useState<number | null>(null);
+  const [nowMs, setNowMs] = useState<number>(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNowMs(Date.now()), 200);
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -776,11 +787,18 @@ export default function Home() {
     setJobStatus(nextStatus);
     setOutput(nextResult);
     setOutputTab("markdown");
+    const now = Date.now();
     if (nextStatus === "needs_analysis_review") {
+      setPhase1End((prev) => prev || now);
       setStatus("Đã sinh Design Analysis. Chờ approve hoặc update trước khi sinh DD.");
+    } else if (nextStatus === "generating_dd") {
+      setPhase2Start((prev) => prev || now);
+      setStatus("Đã approve analysis. Backend đang sinh Detail Design...");
     } else if (nextStatus === "needs_manual_review") {
+      setPhase2End((prev) => prev || now);
       setStatus("Đã sinh xong bản nháp. Chờ Designer Review/Update.");
     } else if (nextStatus === "completed") {
+      setPhase2End((prev) => prev || now);
       setStatus("Đã approve và export artifact.");
     } else if (nextStatus === "failed") {
       setStatus("Generate thất bại.");
@@ -862,6 +880,11 @@ export default function Home() {
     setIsLoading(true);
     setOutput(null);
     setStatus("Khởi tạo project...");
+    const now = Date.now();
+    setPhase1Start(now);
+    setPhase1End(null);
+    setPhase2Start(null);
+    setPhase2End(null);
 
     try {
       // 1. Create Project
@@ -999,6 +1022,10 @@ export default function Home() {
         return;
       }
 
+      if (action === "approve") {
+        setPhase2Start(Date.now());
+        setPhase2End(null);
+      }
       applyGenerationResponse(data.data.status, data.data.result);
       if (action === "approve" || action === "request_update") {
         setAnalysisFeedback("");
@@ -1021,6 +1048,8 @@ export default function Home() {
   const feedbackHistory = payloadOutput?.manualReview?.feedbackHistory ?? [];
   const analysisFeedbackHistory = payloadOutput?.analysisReview?.feedbackHistory ?? [];
   const generationProgress = payloadOutput?.generationProgress;
+  const p1Elapsed = phase1Start !== null ? ((phase1End || nowMs) - phase1Start) / 1000 : null;
+  const p2Elapsed = phase2Start !== null ? ((phase2End || nowMs) - phase2Start) / 1000 : null;
   const executionTraceSteps = payloadOutput?.executionTrace?.steps ?? [];
   const statusTimeline = buildStatusTimeline(jobStatus || "pending");
   const canAnalysisReview =
@@ -1049,21 +1078,7 @@ export default function Home() {
               <div className="mt-1">Source root: {commonInputStatus.sourceRoot ?? "N/A"}</div>
               <div>Version: {commonInputStatus.version ?? "N/A"}</div>
               <div>Loaded files: {commonInputStatus.sourceFileCount ?? 0}</div>
-              <div className="mt-2 text-xs text-sky-700">
-                Runtime hiện đọc templates, checklists, guidelines, skills và common components từ `INPUT/common`.
-              </div>
-              <div className="mt-1 text-xs text-sky-700">
-                Bạn có thể đổi nội dung trong thư mục này, và lần generate tiếp theo sẽ dùng nguồn mới.
-              </div>
-              <div className="mt-1 text-xs text-sky-700">
-                Prompt runtime source: {commonInputStatus.promptRuntime?.source === "input_common_prompts" ? "`INPUT/common/prompts`" : "backend fallback defaults"}.
-              </div>
-              <div className="mt-1 text-xs text-sky-700">
-                Prompt manifest: {commonInputStatus.promptRuntime?.manifestPath ?? "N/A"}
-              </div>
-              <div className="mt-1 text-xs text-sky-700">
-                Prompt version: {commonInputStatus.promptRuntime?.version ?? "N/A"} | Prompt files: {commonInputStatus.promptRuntime?.fileCount ?? 0}
-              </div>
+
             </div>
           )}
 
@@ -1266,6 +1281,46 @@ export default function Home() {
                     <div>{payloadOutput.manualReview?.status ?? "N/A"}</div>
                   </div>
                 </div>
+
+                {(phase1Start !== null || phase2Start !== null) && (
+                  <div className="rounded-xl border border-indigo-200 bg-indigo-50/70 p-4 text-sm text-indigo-950 shadow-sm">
+                    <div className="font-semibold text-base mb-3 flex items-center gap-2 text-indigo-900">
+                      ⏱️ Thời gian xử lý AI (Execution Timers)
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="bg-white p-3.5 rounded-lg border border-indigo-100 shadow-sm">
+                        <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide">
+                          Giai đoạn 1: BD Analysis
+                        </div>
+                        <div className="text-2xl font-bold text-slate-900 mt-1">
+                          {p1Elapsed !== null ? `${p1Elapsed.toFixed(1)}s` : "Chưa chạy"}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-1">
+                          {phase1End
+                            ? "✓ Hoàn thành (Chờ Approve)"
+                            : phase1Start
+                            ? "⏳ Đang phân tích BD..."
+                            : ""}
+                        </div>
+                      </div>
+                      <div className="bg-white p-3.5 rounded-lg border border-indigo-100 shadow-sm">
+                        <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide">
+                          Giai đoạn 2: Sinh Detail Design (DD)
+                        </div>
+                        <div className="text-2xl font-bold text-slate-900 mt-1">
+                          {p2Elapsed !== null ? `${p2Elapsed.toFixed(1)}s` : "Chưa chạy"}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-1">
+                          {phase2End
+                            ? "✓ Hoàn thành sinh DD"
+                            : phase2Start
+                            ? "⏳ Đang sinh Detail Design..."
+                            : "Chờ người dùng ấn Approve"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {generationProgress && (
                   <div className="rounded-md border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">

@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -53,6 +54,20 @@ class GenerationService:
             self._fallback_detail_design,
             chain_name="detail_design_generation",
         )
+        ui_prompt = prompt_catalog.get("detail_design_ui_generation", prompt_catalog["detail_design_generation"])
+        logic_prompt = prompt_catalog.get("detail_design_logic_generation", prompt_catalog["detail_design_generation"])
+        self.detail_design_ui_chain = self.llm_service.build_json_chain(
+            ui_prompt["system"],
+            ui_prompt["user"],
+            self._fallback_detail_design,
+            chain_name="detail_design_ui_generation",
+        )
+        self.detail_design_logic_chain = self.llm_service.build_json_chain(
+            logic_prompt["system"],
+            logic_prompt["user"],
+            self._fallback_detail_design,
+            chain_name="detail_design_logic_generation",
+        )
         self.detail_design_review_chain = self.llm_service.build_json_chain(
             prompt_catalog["detail_design_review"]["system"],
             prompt_catalog["detail_design_review"]["user"],
@@ -73,7 +88,11 @@ class GenerationService:
             return json.dumps(value, indent=2, ensure_ascii=False)
         return str(value)
 
-    def _format_common_guidance(self, common_input: Dict[str, Any]) -> str:
+    def _format_common_guidance(
+        self,
+        common_input: Dict[str, Any],
+        analytics: Optional[Dict[str, Any]] = None,
+    ) -> str:
         guidance = ["Guidelines:"]
         for item in common_input.get("guidelines", []):
             if isinstance(item, dict):
@@ -84,6 +103,15 @@ class GenerationService:
             else:
                 guidance.append(f"- {item}")
         guidance.append("")
+
+        # Extract active signals for dynamic filtering
+        ui_signals = set(
+            s.lower() for s in (analytics.get("uiSignals", []) if analytics else [])
+        )
+        active_modules = set(
+            m.lower() for m in (analytics.get("modules", []) if analytics else [])
+        )
+
         guidance.append("Common input image references:")
         for reference in common_input.get("imageReferences", []):
             guidance.append(
@@ -108,8 +136,21 @@ class GenerationService:
             )
         guidance.append("")
         guidance.append("Common components:")
-        for component in common_input.get("commonComponents", []):
+        components = common_input.get("commonComponents", [])
+        for component in components:
             if isinstance(component, dict):
+                comp_id = str(component.get("id", "")).lower()
+                comp_applies = [str(a).lower() for a in component.get("appliesTo", [])]
+                # Filter if analytics signals are available
+                if ui_signals or active_modules:
+                    matches_signal = any(s in comp_id for s in ui_signals) or any(
+                        s in a for s in ui_signals for a in comp_applies
+                    )
+                    matches_module = any(m in comp_id for m in active_modules) or any(
+                        m in a for m in active_modules for a in comp_applies
+                    )
+                    if not (matches_signal or matches_module):
+                        continue
                 guidance.append(
                     f"- {component.get('id')}: {component.get('ddUsage')}"
                 )
@@ -557,17 +598,32 @@ class GenerationService:
                 f"Generating detail design iteration {iteration}.",
             )
             try:
-                detail_design = self.detail_design_chain.invoke(
-                    {
-                        **payload,
-                        "templates": payload["common_input"]["templates"],
-                        "guidelines": self._format_common_guidance(
-                            payload["common_input"]
-                        ),
-                        "sample_designs": payload["sample_designs"],
-                        "review_feedback": self._stringify_prompt_value(review_feedback),
-                    }
-                )
+                chain_payload = {
+                    **payload,
+                    "templates": payload["common_input"]["templates"],
+                    "guidelines": self._format_common_guidance(
+                        payload["common_input"], payload.get("basic_design_analytics")
+                    ),
+                    "sample_designs": payload["sample_designs"],
+                    "review_feedback": self._stringify_prompt_value(review_feedback),
+                }
+                
+                if not self.llm_service.enabled:
+                    detail_design = self.detail_design_chain.invoke(chain_payload)
+                else:
+                    with ThreadPoolExecutor(max_workers=2) as executor:
+                        fut_ui = executor.submit(self.detail_design_ui_chain.invoke, chain_payload)
+                        fut_logic = executor.submit(self.detail_design_logic_chain.invoke, chain_payload)
+                        res_ui = fut_ui.result()
+                        res_logic = fut_logic.result()
+                    
+                    merged = {}
+                    if isinstance(res_ui, dict):
+                        merged.update(res_ui)
+                    if isinstance(res_logic, dict):
+                        merged.update(res_logic)
+                    detail_design = merged if merged else self._fallback_detail_design(chain_payload)
+
                 detail_design = self._normalize_detail_design(detail_design)
             except Exception:
                 logger.exception(
@@ -968,7 +1024,7 @@ class GenerationService:
                     **context,
                     "basic_design_analytics": basic_design_analytics,
                     "sample_designs": sample_designs,
-                    "guidelines": self._format_common_guidance(context["common_input"]),
+                    "guidelines": self._format_common_guidance(context["common_input"], basic_design_analytics),
                 }
             )
         except Exception:
@@ -1134,7 +1190,7 @@ class GenerationService:
                     **context,
                     "basic_design_analytics": current_result["basicDesignAnalytics"],
                     "sample_designs": sample_designs,
-                    "guidelines": self._format_common_guidance(context["common_input"]),
+                    "guidelines": self._format_common_guidance(context["common_input"], current_result["basicDesignAnalytics"]),
                     "analysis_feedback": feedback,
                 }
             )

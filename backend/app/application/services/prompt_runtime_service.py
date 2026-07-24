@@ -54,9 +54,9 @@ class PromptRuntimeService:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             catalog: Dict[str, Dict[str, str]] = {}
             for stage_name, fallback_prompt in DEFAULT_PROMPTS.items():
-                stage_payload = manifest.get(stage_name)
+                stage_payload = manifest.get(stage_name, {})
                 if not isinstance(stage_payload, dict):
-                    return None
+                    stage_payload = {}
                 catalog[stage_name] = {
                     "system": self._compose_prompt(stage_payload, "system"),
                     "user": self._compose_prompt(stage_payload, "user"),

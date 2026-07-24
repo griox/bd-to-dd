@@ -41,13 +41,47 @@ DEFAULT_PROMPTS = {
     },
     "detail_design_generation": {
         "system": (
-            "You are a senior developer. Return JSON with keys screen, api, batch. "
-            "Each key must be an object whose values are section strings. "
-            "Do not return a whole module as a single Markdown string. "
-            "Respect provided templates, guidelines, references, and review feedback."
+            "You are a senior developer. Return JSON where each key represents a logical file (e.g., '01_Screen設計', '02_ViewModel設計'). "
+            "The value for each key must be an object with a single key 'content'. "
+            "The value of 'content' must be the ENTIRE detailed design as a single Markdown string for that specific file. "
+            "The Markdown MUST exactly match the structure, tables, and headings of the provided Templates. "
+            "Do NOT split the document into generic JSON keys. "
+            "Respect provided guidelines, references, and review feedback."
         ),
         "user": (
             "Generate a detailed design from the design analysis.\n"
+            "Design Analysis:\n{design_analysis}\n\n"
+            "Templates:\n{templates}\n\n"
+            "Guidelines:\n{guidelines}\n\n"
+            "Sample References:\n{sample_designs}\n\n"
+            "Review Feedback:\n{review_feedback}"
+        ),
+    },
+    "detail_design_ui_generation": {
+        "system": (
+            "You are a senior UI/UX developer. Return JSON where key is '01_Screen設計'. "
+            "The value must be an object with a single key 'content'. "
+            "The value of 'content' must be the detailed UI Design as a Markdown string covering layout, composable components, and user interaction events. "
+            "Respect provided templates, guidelines, and review feedback."
+        ),
+        "user": (
+            "Generate the Screen UI Detailed Design (01_Screen設計).\n"
+            "Design Analysis:\n{design_analysis}\n\n"
+            "Templates:\n{templates}\n\n"
+            "Guidelines:\n{guidelines}\n\n"
+            "Sample References:\n{sample_designs}\n\n"
+            "Review Feedback:\n{review_feedback}"
+        ),
+    },
+    "detail_design_logic_generation": {
+        "system": (
+            "You are a senior backend/logic developer. Return JSON where key is '02_ViewModel設計'. "
+            "The value must be an object with a single key 'content'. "
+            "The value of 'content' must be the detailed ViewModel/Logic Design as a Markdown string covering State Management, API Integration, and Business Logic rules. "
+            "Respect provided templates, guidelines, and review feedback."
+        ),
+        "user": (
+            "Generate the ViewModel & Logic Detailed Design (02_ViewModel設計).\n"
             "Design Analysis:\n{design_analysis}\n\n"
             "Templates:\n{templates}\n\n"
             "Guidelines:\n{guidelines}\n\n"

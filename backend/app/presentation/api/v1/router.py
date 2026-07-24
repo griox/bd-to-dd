@@ -22,6 +22,7 @@ from app.presentation.schemas.api import (
     DesignerReviewAction,
     ProjectCreate,
 )
+from app.core.config import INPUT_ROOT_PATH
 
 
 router = APIRouter(prefix="/api/v1")
@@ -276,7 +277,7 @@ def _read_uploaded_document(file: UploadFile, context: str):
             raise HTTPException(status_code=status_code, detail=str(exc)) from exc
         return content, {
             "sourceType": "image",
-            "extractionModel": vision_extractor._model,
+            "extractionModel": getattr(vision_extractor, "_model", "gemini-flash"),
         }
 
     if suffix not in TEXT_EXTENSIONS:
@@ -332,18 +333,53 @@ def upload_design_input_bundle(
         raise HTTPException(status_code=400, detail="Composable list must be a CSV (.csv) file.")
 
     design_content, _ = _read_uploaded_document(design, "basic_design")
+    
+    # Save raw design file to INPUT/input/01_UI層 if it does not already exist
+    input_ui_dir = INPUT_ROOT_PATH / "input" / "01_UI層"
+    input_ui_dir.mkdir(parents=True, exist_ok=True)
+    if design.filename:
+        target_design_path = input_ui_dir / design.filename
+        if not target_design_path.exists():
+            design.file.seek(0)
+            target_design_path.write_bytes(design.file.read())
+
     ui_sections = []
     image_names = []
+    
+    # Ensure images directory exists
+    input_images_dir = input_ui_dir / "images"
+    if images:
+        input_images_dir.mkdir(parents=True, exist_ok=True)
+
     for image in images:
-        image_content, metadata = _read_uploaded_document(image, "ui_design")
-        if metadata["sourceType"] != "image":
-            raise HTTPException(status_code=400, detail=f"UI file is not an image: {image.filename}")
+        try:
+            image_content, metadata = _read_uploaded_document(image, "ui_design")
+            if metadata["sourceType"] != "image":
+                raise HTTPException(status_code=400, detail=f"UI file is not an image: {image.filename}")
+        except HTTPException as exc:
+            image_content = f"[UI Image: {image.filename} - Text extraction unavailable: {exc.detail}]"
         image_names.append(image.filename)
         ui_sections.append(f"## UI Image: {image.filename}\n\n{image_content}")
+        
+        # Save raw image to INPUT/input/01_UI層/images if it does not already exist
+        if image.filename:
+            target_img_path = input_images_dir / image.filename
+            if not target_img_path.exists():
+                image.file.seek(0)
+                target_img_path.write_bytes(image.file.read())
 
     if composable is not None:
         csv_content, _ = _read_uploaded_document(composable, "ui_design")
         ui_sections.append(f"## Composable List: {composable.filename}\n\n{csv_content}")
+        
+        # Save raw CSV to INPUT/input/composable_list if it does not already exist
+        input_csv_dir = INPUT_ROOT_PATH / "input" / "composable_list"
+        input_csv_dir.mkdir(parents=True, exist_ok=True)
+        if composable.filename:
+            target_csv_path = input_csv_dir / composable.filename
+            if not target_csv_path.exists():
+                composable.file.seek(0)
+                target_csv_path.write_bytes(composable.file.read())
 
     _save_document(project_id, "basic-design", design_content)
     if ui_sections:

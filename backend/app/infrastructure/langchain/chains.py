@@ -23,6 +23,7 @@ class LLMService:
                 model=LLM_MODEL,
                 google_api_key=LLM_API_KEY,
                 retries=1,
+                timeout=120,
             )
 
     def build_json_chain(
@@ -61,7 +62,7 @@ class LLMService:
                     LLM_MODEL,
                     attempt,
                     MAX_JSON_ATTEMPTS,
-                    sorted(payload.keys()),
+                    list(payload.keys()),
                 )
                 try:
                     result = chain.invoke(payload)
