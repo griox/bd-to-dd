@@ -37,9 +37,13 @@ MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 
 def _session_local():
-    from app.infrastructure.persistence.postgres.database import SessionLocal
-
+    from app.infrastructure.persistence.postgres.database import Base, SessionLocal, engine
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception:
+        pass
     return SessionLocal
+
 
 
 def _load_document(project_id: str, kind: str):

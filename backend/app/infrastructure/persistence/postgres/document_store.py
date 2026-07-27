@@ -13,15 +13,34 @@ def _project_dir(project_id: str) -> Path:
 def save_document(project_id: str, kind: str, content: str) -> Path:
     path = _project_dir(project_id) / f"{kind}.txt"
     path.write_text(content)
+    try:
+        from app.infrastructure.storage.gcs_storage_service import GCSStorageService
+        gcs = GCSStorageService()
+        if gcs.is_enabled():
+            gcs.save_text(f"projects/{project_id}/{kind}.txt", content)
+    except Exception:
+        pass
     return path
 
 
 def load_document(project_id: str, kind: str) -> Optional[str]:
     path = _project_dir(project_id) / f"{kind}.txt"
-    if not path.exists():
-        return None
-    return path.read_text()
+    if path.exists():
+        return path.read_text()
+    try:
+        from app.infrastructure.storage.gcs_storage_service import GCSStorageService
+        gcs = GCSStorageService()
+        if gcs.is_enabled():
+            data = gcs.load_bytes(f"projects/{project_id}/{kind}.txt")
+            if data:
+                text = data.decode("utf-8")
+                path.write_text(text)
+                return text
+    except Exception:
+        pass
+    return None
 
 
 def document_exists(project_id: str, kind: str) -> bool:
-    return (_project_dir(project_id) / f"{kind}.txt").exists()
+    return load_document(project_id, kind) is not None
+
