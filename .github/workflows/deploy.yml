@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
+
 
 permissions:
   contents: read
@@ -55,7 +59,9 @@ jobs:
   deploy-production:
     name: Deploy to Google Cloud Run
     needs: test-and-lint
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       id-token: write
