@@ -6,9 +6,14 @@ from app.infrastructure.persistence.postgres import models as _models  # noqa: F
 from app.presentation.api.v1.router import router
 
 
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as exc:
+    import logging
+    logging.warning("Database schema initialization warning: %s", exc)
 
 app = FastAPI(title="BD-to-DD Toolkit")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
