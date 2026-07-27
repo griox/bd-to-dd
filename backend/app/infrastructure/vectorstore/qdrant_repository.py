@@ -141,21 +141,25 @@ class QdrantVectorStore:
         self._init_client()
 
     def _init_client(self) -> None:
-        """Attempt to connect to Qdrant. Fails silently if unavailable."""
+        """Attempt to connect to Qdrant."""
         try:
+            import logging  # noqa: PLC0415
             from qdrant_client import QdrantClient  # noqa: PLC0415
             if self._url == ":memory:":
                 self._client = QdrantClient(location=":memory:")
             elif self._api_key:
-                self._client = QdrantClient(url=self._url, api_key=self._api_key, timeout=5)
+                self._client = QdrantClient(url=self._url, api_key=self._api_key, check_compatibility=False, timeout=10)
             else:
-                self._client = QdrantClient(url=self._url, timeout=5)
+                self._client = QdrantClient(url=self._url, check_compatibility=False, timeout=10)
             # Verify connectivity with a lightweight call
             self._client.get_collections()
             self._available = True
-        except Exception:
+        except Exception as exc:
+            import logging  # noqa: PLC0415
+            logging.warning("Failed to initialize QdrantVectorStore client: %s", exc)
             self._client = None
             self._available = False
+
 
     def _ensure_collection(self) -> None:
         """Create the Qdrant collection if it does not exist."""

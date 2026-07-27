@@ -16,7 +16,8 @@ langchain-community
 # Phase 3+: Dense embedding via Gemini API (google-genai already listed above)
 
 # Phase 4+: Qdrant vector store
-qdrant-client
+qdrant-client>=1.18.0
+
 
 # Phase 5+: BM25 local sparse index
 rank-bm25
