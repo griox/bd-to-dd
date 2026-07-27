@@ -68,9 +68,12 @@ class LLMService:
                     list(payload.keys()),
                 )
                 try:
-                    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                        future = executor.submit(chain.invoke, payload)
+                    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+                    future = executor.submit(chain.invoke, payload)
+                    try:
                         result = future.result(timeout=_LLM_CALL_TIMEOUT_S)
+                    finally:
+                        executor.shutdown(wait=False)
                     elapsed_ms = int((time.perf_counter() - started_at) * 1000)
                     logger.info(
                         "[llm_call] chain=%s provider=gemini model=%s event=invoke_success attempt=%s elapsed_ms=%s result_keys=%s",
