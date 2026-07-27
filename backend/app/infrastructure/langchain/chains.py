@@ -53,7 +53,10 @@ class LLMService:
             | RunnableLambda(lambda payload: json.loads(json.dumps(payload)))
         )
 
+        _LLM_CALL_TIMEOUT_S = 150  # hard wall-clock timeout per LLM call attempt
+
         def invoke_or_fallback(payload: Dict[str, Any]) -> Dict[str, Any]:
+            import concurrent.futures  # noqa: PLC0415
             for attempt in range(1, MAX_JSON_ATTEMPTS + 1):
                 started_at = time.perf_counter()
                 logger.info(
@@ -65,7 +68,9 @@ class LLMService:
                     list(payload.keys()),
                 )
                 try:
-                    result = chain.invoke(payload)
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                        future = executor.submit(chain.invoke, payload)
+                        result = future.result(timeout=_LLM_CALL_TIMEOUT_S)
                     elapsed_ms = int((time.perf_counter() - started_at) * 1000)
                     logger.info(
                         "[llm_call] chain=%s provider=gemini model=%s event=invoke_success attempt=%s elapsed_ms=%s result_keys=%s",
@@ -76,6 +81,16 @@ class LLMService:
                         sorted(result.keys()) if isinstance(result, dict) else [],
                     )
                     return result
+                except concurrent.futures.TimeoutError:
+                    elapsed_ms = int((time.perf_counter() - started_at) * 1000)
+                    logger.error(
+                        "[llm_call] chain=%s provider=gemini model=%s event=invoke_timeout attempt=%s elapsed_ms=%s fallback=true",
+                        chain_name,
+                        LLM_MODEL,
+                        attempt,
+                        elapsed_ms,
+                    )
+                    return fallback(payload)
                 except (json.JSONDecodeError, OutputParserException) as exc:
                     elapsed_ms = int((time.perf_counter() - started_at) * 1000)
                     if attempt < MAX_JSON_ATTEMPTS:
@@ -112,6 +127,7 @@ class LLMService:
             return fallback(payload)
 
         return RunnableLambda(invoke_or_fallback)
+
 
     def invoke_json(self, system_prompt: str, user_prompt: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         if not self.client:
