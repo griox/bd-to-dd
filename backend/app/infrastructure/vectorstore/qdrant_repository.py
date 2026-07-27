@@ -161,6 +161,32 @@ class QdrantVectorStore:
             self._available = False
 
 
+    _PAYLOAD_INDEX_FIELDS = [
+        "approval_status",
+        "doc_type",
+        "module_type",
+        "content_type",
+        "component_id",
+        "doc_id",
+    ]
+
+    def _create_payload_indexes(self) -> None:
+        """Create keyword payload indexes required for filtered queries on Qdrant Cloud."""
+        try:
+            from qdrant_client.models import PayloadSchemaType  # noqa: PLC0415
+            schema_type = PayloadSchemaType.KEYWORD
+        except ImportError:
+            schema_type = "keyword"
+        for field in self._PAYLOAD_INDEX_FIELDS:
+            try:
+                self._client.create_payload_index(
+                    collection_name=self._collection,
+                    field_name=field,
+                    field_schema=schema_type,
+                )
+            except Exception:  # index may already exist; ignore
+                pass
+
     def _ensure_collection(self) -> None:
         """Create the Qdrant collection if it does not exist."""
         existing = {c.name for c in self._client.get_collections().collections}
@@ -174,6 +200,7 @@ class QdrantVectorStore:
                     distance=distance.COSINE,
                 ),
             )
+            self._create_payload_indexes()
 
     # ------------------------------------------------------------------
     # DenseVectorStore protocol
@@ -199,6 +226,7 @@ class QdrantVectorStore:
                 distance=distance.COSINE,
             ),
         )
+        self._create_payload_indexes()
 
     def upsert_chunks(self, chunks: List[KnowledgeChunk]) -> None:
         """Upsert KnowledgeChunks into Qdrant.
