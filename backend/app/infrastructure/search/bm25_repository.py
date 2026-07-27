@@ -263,7 +263,7 @@ class BM25Repository:
             self._bm25 = None
 
     def _save_index(self) -> None:
-        """Persist the current index to disk as JSON."""
+        """Persist the current index to disk as JSON, and sync to GCS."""
         self._index_path.parent.mkdir(parents=True, exist_ok=True)
         data = _index_to_dict(
             self._chunk_ids,
@@ -271,10 +271,31 @@ class BM25Repository:
             self._metadatas,
             self._token_lists,
         )
-        self._index_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        text = json.dumps(data, ensure_ascii=False)
+        self._index_path.write_text(text, encoding="utf-8")
+        try:
+            from app.infrastructure.storage.gcs_storage_service import GCSStorageService  # noqa: PLC0415
+            gcs = GCSStorageService()
+            if gcs.is_enabled():
+                gcs.save_text("kb/bm25_index.json", text)
+        except Exception:
+            pass
 
     def _load_index(self) -> None:
-        """Load index from disk if it exists; otherwise start empty."""
+        """Load index from disk if it exists; otherwise try GCS, then start empty."""
+        if not self._index_path.exists():
+            # Try restoring from GCS before giving up
+            try:
+                from app.infrastructure.storage.gcs_storage_service import GCSStorageService  # noqa: PLC0415
+                gcs = GCSStorageService()
+                if gcs.is_enabled():
+                    gcs_bytes = gcs.load_bytes("kb/bm25_index.json")
+                    if gcs_bytes:
+                        self._index_path.parent.mkdir(parents=True, exist_ok=True)
+                        self._index_path.write_bytes(gcs_bytes)
+            except Exception:
+                pass
+
         if not self._index_path.exists():
             return
         try:
