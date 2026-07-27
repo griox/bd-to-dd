@@ -148,7 +148,18 @@ class GeminiVisionDesignExtractor:
                 ],
                 config={"response_mime_type": "application/json"},
             )
-            payload = json.loads(response.text or "{}")
+            text = response.text or "{}"
+            if text.startswith("```json"):
+                text = text.split("```json", 1)[1]
+            if text.endswith("```"):
+                text = text.rsplit("```", 1)[0]
+            text = text.strip()
+            
+            import re  # noqa: PLC0415
+            text = re.sub(r',\s*}', '}', text)
+            text = re.sub(r',\s*\]', ']', text)
+            
+            payload = json.loads(text)
         except Exception as exc:
             raise VisionExtractionError(f"Gemini vision extraction failed: {exc}") from exc
 

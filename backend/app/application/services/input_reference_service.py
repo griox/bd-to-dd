@@ -241,9 +241,27 @@ class InputReferenceService:
                 )
             return self._image_cache[content_hash]
         except Exception as exc:
-            raise RuntimeError(
-                f"Failed to extract input reference image {image_path}: {exc}"
-            ) from exc
+            import json  # noqa: PLC0415
+            logger.warning(
+                "Failed to extract input reference image %s: %s. Using fallback description.",
+                image_path,
+                exc,
+            )
+            return json.dumps(
+                {
+                    "source": {
+                        "type": "image",
+                        "filename": image_path.name,
+                        "model": "fallback",
+                    },
+                    "context": "ui_design",
+                    "extraction": {
+                        "summary": f"Image {image_path.name} could not be automatically analyzed.",
+                        "error": str(exc),
+                    },
+                },
+                ensure_ascii=False,
+            )
 
     def _format_references(self, references: List[Dict[str, Any]]) -> str:
         lines = [
