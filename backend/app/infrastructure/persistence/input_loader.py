@@ -4,7 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import DefaultDict, Dict, List, Optional, Tuple
 
-from app.core.config import INPUT_ROOT_PATH
+from app.core.config import INPUT_ROOT_PATH, SEED_SAMPLES_PATH
 from app.domain.repositories.vector_store_repository import VisionDesignExtractor
 from app.domain.entities.sample_design import ReviewedDetailDesignSample
 from app.infrastructure.llm.vision_client import NORMALIZED_SCREEN_SECTION_FALLBACKS
@@ -183,6 +183,8 @@ class InputReviewedDdLoader:
     def _load_dd_samples(self) -> List[ReviewedDetailDesignSample]:
         dd_root = self.root / "DD"
         if not dd_root.exists():
+            if self.root == INPUT_ROOT_PATH and not (self.root / "input").exists():
+                return self._load_fallback_seed_samples()
             return []
 
         grouped_sections: DefaultDict[Tuple[str, str], Dict[str, str]] = defaultdict(dict)
@@ -257,7 +259,30 @@ class InputReviewedDdLoader:
                     },
                 )
             )
+        if not samples and self.root == INPUT_ROOT_PATH:
+            return self._load_fallback_seed_samples()
         return samples
+
+
+    def _load_fallback_seed_samples(self) -> List[ReviewedDetailDesignSample]:
+        if not SEED_SAMPLES_PATH.exists():
+            return []
+        try:
+            data = json.loads(SEED_SAMPLES_PATH.read_text(encoding="utf-8"))
+            samples = []
+            for item in data:
+                content = item.get("content", {})
+                content_str = json.dumps(content, ensure_ascii=False) if isinstance(content, dict) else str(content)
+                samples.append(
+                    ReviewedDetailDesignSample(
+                        id=str(item.get("id", "sample")),
+                        content=content_str,
+                        metadata=dict(item.get("metadata", {})),
+                    )
+                )
+            return samples
+        except Exception:
+            return []
 
     def _build_sample(
         self,

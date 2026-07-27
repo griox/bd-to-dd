@@ -56,10 +56,21 @@ def export_artifacts(project_id: str, job_id: str, payload: Dict[str, Any]) -> D
     job_dir = _job_dir(project_id, job_id)
     json_path = job_dir / "detail-design.json"
     markdown_path = job_dir / "detail-design.md"
-    json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
-    
+    json_content = json.dumps(payload, ensure_ascii=False, indent=2)
     markdown_content = _to_markdown(payload)
+    
+    json_path.write_text(json_content)
     markdown_path.write_text(markdown_content)
+
+    try:
+        from app.infrastructure.storage.gcs_storage_service import GCSStorageService
+        gcs_storage = GCSStorageService()
+        if gcs_storage.is_enabled():
+            gcs_storage.save_text(f"{project_id}/{job_id}/detail-design.json", json_content)
+            gcs_storage.save_text(f"{project_id}/{job_id}/detail-design.md", markdown_content)
+    except Exception:
+        pass
+
 
     detail_design = payload.get("detailDesign", {})
     is_multi_file = any(isinstance(v, dict) and "content" in v for v in detail_design.values())

@@ -6,6 +6,8 @@ psycopg2-binary
 pydantic
 python-multipart
 python-dotenv
+google-cloud-storage
+
 
 langchain
 langchain-google-genai

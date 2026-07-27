@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+import hashlib
 import mimetypes
 import re
 from dataclasses import dataclass
@@ -62,6 +64,7 @@ class InputReferenceService:
     ) -> None:
         self.root = Path(root or INPUT_ROOT_PATH)
         self.image_extractor = image_extractor
+        self._image_cache: Dict[str, str] = {}
 
     def find_similar_references(
         self,
@@ -192,10 +195,15 @@ class InputReferenceService:
             if candidate.csv_path is not None
             else ""
         )
-        image_descriptions = [
-            self._extract_image_description(image_path)
-            for image_path in candidate.image_paths
-        ]
+        if not candidate.image_paths:
+            image_descriptions = []
+        elif len(candidate.image_paths) == 1:
+            image_descriptions = [self._extract_image_description(candidate.image_paths[0])]
+        else:
+            with ThreadPoolExecutor(max_workers=min(len(candidate.image_paths), 5)) as executor:
+                image_descriptions = list(
+                    executor.map(self._extract_image_description, candidate.image_paths)
+                )
         return {
             "componentId": candidate.component_id,
             "name": candidate.name,
@@ -219,13 +227,19 @@ class InputReferenceService:
                 f"Gemini Flash vision extractor is required for input reference image: {image_path}"
             )
         try:
-            mime_type = mimetypes.guess_type(str(image_path))[0] or "image/png"
-            return self.image_extractor.extract_document_text(
-                image_path.read_bytes(),
-                mime_type,
-                "ui_design",
-                image_path.name,
-            )
+            image_bytes = image_path.read_bytes()
+            content_hash = hashlib.sha256(image_bytes).hexdigest()
+            if content_hash not in self._image_cache:
+                mime_type = mimetypes.guess_type(str(image_path))[0] or "image/png"
+                self._image_cache[content_hash] = (
+                    self.image_extractor.extract_document_text(
+                        image_bytes,
+                        mime_type,
+                        "ui_design",
+                        image_path.name,
+                    )
+                )
+            return self._image_cache[content_hash]
         except Exception as exc:
             raise RuntimeError(
                 f"Failed to extract input reference image {image_path}: {exc}"

@@ -31,5 +31,18 @@
       "name": "Order Batch Sync"
     },
     "content": "{\n  \"analysis\": {\n    \"summary\": \"Scheduled synchronization of order statuses from external partner system.\",\n    \"scope\": \"Generate detail design for async integration and operational sync monitoring.\",\n    \"entities\": [\"Order\", \"OrderSyncJob\", \"PartnerOrderStatus\"],\n    \"businessFlows\": [\n      \"Start sync job\",\n      \"Fetch changed partner orders\",\n      \"Map external statuses\",\n      \"Update internal order state\",\n      \"Persist sync report\"\n    ],\n    \"apiCandidates\": [\"GET partner/orders/changes\", \"POST /api/order-sync-jobs\"],\n    \"uiSignals\": [\"Sync job monitoring screen\", \"Failure detail view\"],\n    \"risks\": [\"Partner API timeout\", \"Duplicate updates across retries\"],\n    \"assumptions\": [\"Sync runs every 15 minutes\", \"Order status updates must be idempotent\"]\n  },\n  \"detailDesign\": {\n    \"screen\": {\n      \"01_UI_Design\": \"Operations screen showing sync history, current job state, and failed order detail view.\",\n      \"02_Components\": \"SyncJobTable, FailureSummaryCard, JobDetailDrawer, RetryActionButton.\",\n      \"03_Data_Models\": \"Order, OrderSyncJob, PartnerOrderStatus.\",\n      \"04_API_Integration\": \"GET partner/orders/changes, POST /api/order-sync-jobs.\",\n      \"05_Business_Logic\": \"Display job progress, surface partial failures, and allow targeted investigation of failed order mappings.\",\n      \"06_State_Management\": \"Track polling state for current job, selected failure record, and retry action state.\"\n    },\n    \"api\": {\n      \"01_Contract\": \"Expose internal sync job creation, status retrieval, failure summary, and order-level diagnostics.\",\n      \"02_Business_Logic\": \"Retry transient partner failures, map partner statuses to internal states, ensure idempotent writes, and mark partial completion when needed.\",\n      \"03_Data_Access\": \"Persist sync job summary, updated orders, and failed records in order_sync_jobs and order_sync_failures tables.\"\n    },\n    \"batch\": {\n      \"01_Job_Definition\": \"Cron-triggered order sync job running every 15 minutes.\",\n      \"02_Processing_Logic\": \"Fetch partner deltas, transform statuses, update orders, collect failures, and persist run summary.\",\n      \"03_Data_Access\": \"Read partner delta cursor, update orders table, and write execution/failure records for diagnostics.\"\n    }\n  },\n  \"review\": {\n    \"status\": \"PASS\",\n    \"findings\": [],\n    \"strengths\": [\"Good sample for async integration, retries, and partial-failure batch handling.\"],\n    \"nextActions\": [\"Approved sample for operational batch and partner sync modules.\"]\n  }\n}"
+  },
+  {
+    "id": "reviewed-project-1-job-1",
+    "metadata": {
+      "module_type": "generated",
+      "approval_status": "reviewed",
+      "quality_score": 1.0,
+      "tags": [
+        "generated",
+        "designer-approved"
+      ]
+    },
+    "content": "{\"id\": \"reviewed-project-1-job-1\", \"detailDesign\": {\"screen\": {\"01_UI_Design\": \"Registration form\", \"02_Components\": \"EmailInput, PasswordInput\"}}, \"metadata\": {\"module_type\": \"generated\", \"approval_status\": \"reviewed\", \"quality_score\": 1.0, \"tags\": [\"generated\", \"designer-approved\"]}}"
   }
 ]

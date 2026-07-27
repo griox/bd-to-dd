@@ -18,6 +18,8 @@ backend/.venv/
 backend/tmp/
 backend/artifacts/
 backend/test.db
+backend/INPUT/
+
 
 frontend/node_modules/
 frontend/.next/

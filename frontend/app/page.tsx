@@ -704,10 +704,30 @@ function KbStepAccordion({ steps, currentStep }: { steps: KnowledgeBaseProgressS
   );
 }
 
+function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    if (hostname.includes("frontend") && hostname.includes(".run.app")) {
+      const backendHostname = hostname.replace("frontend", "backend");
+      return `${protocol}//${backendHostname}/api/v1`;
+    }
+  }
+  return envUrl && envUrl.trim().length > 0
+    ? envUrl
+    : "http://localhost:8000/api/v1";
+}
+
 export default function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+  const [baseUrl, setBaseUrl] = useState<string>("http://localhost:8000/api/v1");
+
+  useEffect(() => {
+    setBaseUrl(getApiBaseUrl());
+  }, []);
 
   const [designFile, setDesignFile] = useState<File | null>(null);
+
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [composableFile, setComposableFile] = useState<File | null>(null);
   const [projectId, setProjectId] = useState("");

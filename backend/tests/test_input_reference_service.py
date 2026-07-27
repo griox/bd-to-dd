@@ -129,6 +129,35 @@ class InputReferenceServiceTest(unittest.TestCase):
                     ui_design="",
                 )
 
+    def test_caches_image_descriptions_by_sha256_hash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ui_dir = root / "input" / "01_UI層"
+            image_dir = ui_dir / "images"
+            ui_dir.mkdir(parents=True)
+            image_dir.mkdir(parents=True)
+            (ui_dir / "N9P90M4X4004W002_Registration.md").write_text(
+                "# Registration\nUser Registration lets User create Account.\n",
+                encoding="utf-8",
+            )
+            (image_dir / "N9P90M4X4004W002_Registration.png").write_bytes(b"selected_image_content")
+            extractor = FakeDocumentImageExtractor()
+            service = InputReferenceService(root, image_extractor=extractor)
+
+            res1 = service.find_similar_references(
+                basic_design="Build User Registration Account creation.",
+                ui_design="",
+            )
+            res2 = service.find_similar_references(
+                basic_design="Build User Registration Account creation.",
+                ui_design="",
+            )
+
+            self.assertEqual(res1["referenceCount"], 1)
+            self.assertEqual(res2["referenceCount"], 1)
+            self.assertEqual(len(extractor.calls), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
+

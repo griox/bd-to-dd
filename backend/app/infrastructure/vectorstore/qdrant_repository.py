@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional
 
 from app.core.config import (
     GEMINI_EMBEDDING_DIMENSIONS,
+    QDRANT_API_KEY,
     QDRANT_COLLECTION,
     QDRANT_URL,
 )
@@ -129,10 +130,12 @@ class QdrantVectorStore:
         url: str = QDRANT_URL,
         collection: str = QDRANT_COLLECTION,
         vector_size: int = GEMINI_EMBEDDING_DIMENSIONS,
+        api_key: Optional[str] = QDRANT_API_KEY,
     ) -> None:
         self._url = url
         self._collection = collection
         self._vector_size = vector_size
+        self._api_key = api_key
         self._client = None
         self._available = False
         self._init_client()
@@ -141,7 +144,12 @@ class QdrantVectorStore:
         """Attempt to connect to Qdrant. Fails silently if unavailable."""
         try:
             from qdrant_client import QdrantClient  # noqa: PLC0415
-            self._client = QdrantClient(url=self._url, timeout=5)
+            if self._url == ":memory:":
+                self._client = QdrantClient(location=":memory:")
+            elif self._api_key:
+                self._client = QdrantClient(url=self._url, api_key=self._api_key, timeout=5)
+            else:
+                self._client = QdrantClient(url=self._url, timeout=5)
             # Verify connectivity with a lightweight call
             self._client.get_collections()
             self._available = True

@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from typing import Optional
+
 
 try:
     from dotenv import load_dotenv
@@ -14,7 +16,8 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 TMP_DIR = Path(os.getenv("TMP_DIR", str(BASE_DIR / "tmp")))
 ARTIFACTS_DIR = Path(os.getenv("ARTIFACTS_DIR", str(BASE_DIR / "artifacts")))
 SEED_SAMPLES_PATH = BASE_DIR / "app" / "sample_data" / "reviewed_detail_design_samples.json"
-INPUT_ROOT_PATH = Path(os.getenv("INPUT_ROOT_PATH", str(BASE_DIR.parent / "INPUT")))
+_default_input_path = BASE_DIR / "INPUT" if (BASE_DIR / "INPUT").exists() else BASE_DIR.parent / "INPUT"
+INPUT_ROOT_PATH = Path(os.getenv("INPUT_ROOT_PATH", str(_default_input_path)))
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 TMP_DIR.mkdir(parents=True, exist_ok=True)
@@ -64,6 +67,7 @@ GEMINI_EMBEDDING_BATCH_SIZE: int = int(
 # ---------------------------------------------------------------------------
 VECTOR_DB_PROVIDER: str = os.getenv("VECTOR_DB_PROVIDER", "qdrant")
 QDRANT_URL: str = os.getenv("QDRANT_URL", "http://localhost:6333")
+QDRANT_API_KEY: Optional[str] = os.getenv("QDRANT_API_KEY")
 QDRANT_COLLECTION: str = os.getenv("QDRANT_COLLECTION", "bd_to_dd_chunks")
 
 # ---------------------------------------------------------------------------
@@ -78,3 +82,10 @@ BM25_TOP_K: int = int(os.getenv("BM25_TOP_K", "20"))
 RETRIEVAL_MIN_TOP_K: int = int(os.getenv("RETRIEVAL_MIN_TOP_K", "3"))
 RETRIEVAL_MAX_TOP_K: int = int(os.getenv("RETRIEVAL_MAX_TOP_K", "3"))
 RETRIEVAL_SCORE_GAP: float = float(os.getenv("RETRIEVAL_SCORE_GAP", "0.10"))
+
+# ---------------------------------------------------------------------------
+# Google Cloud Storage (Production Object Persistence)
+# ---------------------------------------------------------------------------
+GCS_BUCKET_NAME: Optional[str] = os.getenv("GCS_BUCKET_NAME")
+GCS_PREFIX: str = os.getenv("GCS_PREFIX", "artifacts/")
+
