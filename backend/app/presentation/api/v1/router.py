@@ -201,6 +201,8 @@ def _run_detail_design_job(job_id: str, project_id: str) -> None:
 
 @router.post("/projects", status_code=201)
 def create_project(req: ProjectCreate):
+    from app.infrastructure.persistence.postgres.database import Base, engine
+    Base.metadata.create_all(bind=engine)
     SessionLocal = _session_local()
     ProjectModel = _project_model()
     db = SessionLocal()
@@ -209,15 +211,21 @@ def create_project(req: ProjectCreate):
         db.add(project)
         db.commit()
         db.refresh(project)
+        created_at_str = (
+            project.created_at.isoformat()
+            if hasattr(project.created_at, "isoformat")
+            else str(project.created_at)
+        )
         return {
             "data": {
                 "projectId": project.id,
                 "name": project.name,
-                "createdAt": project.created_at,
+                "createdAt": created_at_str,
             }
         }
     finally:
         db.close()
+
 
 
 def _csv_to_markdown(raw: str) -> str:
