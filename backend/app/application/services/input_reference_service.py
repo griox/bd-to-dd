@@ -280,9 +280,15 @@ class InputReferenceService:
             )
             lines.extend(f"- {source_file}" for source_file in reference["sourceFiles"])
             if reference["markdown"]:
-                lines.extend(["Markdown:", reference["markdown"]])
+                markdown_content = reference["markdown"]
+                if len(markdown_content) > 5000:
+                    markdown_content = markdown_content[:5000] + "\n...[TRUNCATED TO SAVE CONTEXT]..."
+                lines.extend(["Markdown:", markdown_content])
             if reference["csv"]:
-                lines.extend(["Composable CSV:", reference["csv"]])
+                csv_content = reference["csv"]
+                if len(csv_content) > 2000:
+                    csv_content = csv_content[:2000] + "\n...[TRUNCATED TO SAVE CONTEXT]..."
+                lines.extend(["Composable CSV:", csv_content])
             if reference["imageDescriptions"]:
                 lines.append("Gemini Flash image analysis:")
                 lines.extend(reference["imageDescriptions"])
