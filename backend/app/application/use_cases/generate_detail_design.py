@@ -88,6 +88,24 @@ class GenerationService:
             return json.dumps(value, indent=2, ensure_ascii=False)
         return str(value)
 
+    def _format_initial_analysis_guidance(self, common_input: Dict[str, Any]) -> str:
+        guidance = ["Guidelines:"]
+        for item in common_input.get("guidelines", []):
+            if isinstance(item, dict):
+                guidance.append(
+                    f"- [{item.get('id')}] {item.get('stage')} "
+                    f"({item.get('severity')}): {item.get('rule')}"
+                )
+            else:
+                guidance.append(f"- {item}")
+        guidance.append("")
+        
+        guidance.append("Planning skills:")
+        for key, skill in common_input.get("skills", {}).items():
+            guidance.append(f"- {key} ({skill['stage']}): {skill['purpose']}")
+        
+        return "\n".join(guidance)
+
     def _format_common_guidance(
         self,
         common_input: Dict[str, Any],
@@ -895,7 +913,7 @@ class GenerationService:
             basic_design_analytics = self.basic_design_analytics_chain.invoke(
                 {
                     **context,
-                    "common_input": json.dumps(context["common_input"], ensure_ascii=False),
+                    "common_input": self._format_initial_analysis_guidance(context["common_input"]),
                 }
             )
         except Exception:
