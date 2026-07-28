@@ -841,6 +841,11 @@ class GenerationService:
         update_status,
     ) -> Dict[str, Any]:
         self._build_chains()
+        from app.application.services.markdown_cleaner import clean_markdown_text  # noqa: PLC0415
+        basic_design = clean_markdown_text(basic_design)
+        if ui_design:
+            ui_design = clean_markdown_text(ui_design)
+
         base_payload = {
             "project_id": project_id,
             "job_id": job_id,

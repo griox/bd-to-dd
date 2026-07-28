@@ -221,6 +221,37 @@ class InputReferenceService:
             "imageDescriptions": image_descriptions,
         }
 
+    def _get_db_image_cache(self, content_hash: str) -> Optional[str]:
+        try:
+            from app.infrastructure.persistence.postgres.database import SessionLocal  # noqa: PLC0415
+            from app.infrastructure.persistence.postgres.models import ImageAnalysisCacheModel  # noqa: PLC0415
+            db = SessionLocal()
+            try:
+                cached = db.query(ImageAnalysisCacheModel).filter_by(image_hash=content_hash).first()
+                if cached:
+                    logger.info("Persistent image cache HIT for hash %s", content_hash[:8])
+                    return cached.extraction_json
+            finally:
+                db.close()
+        except Exception:
+            pass
+        return None
+
+    def _save_db_image_cache(self, content_hash: str, extraction_json: str) -> None:
+        try:
+            from app.infrastructure.persistence.postgres.database import SessionLocal  # noqa: PLC0415
+            from app.infrastructure.persistence.postgres.models import ImageAnalysisCacheModel  # noqa: PLC0415
+            db = SessionLocal()
+            try:
+                cached = db.query(ImageAnalysisCacheModel).filter_by(image_hash=content_hash).first()
+                if not cached:
+                    db.add(ImageAnalysisCacheModel(image_hash=content_hash, extraction_json=extraction_json))
+                    db.commit()
+            finally:
+                db.close()
+        except Exception:
+            pass
+
     def _extract_image_description(self, image_path: Path) -> str:
         if self.image_extractor is None:
             raise RuntimeError(
@@ -230,15 +261,19 @@ class InputReferenceService:
             image_bytes = image_path.read_bytes()
             content_hash = hashlib.sha256(image_bytes).hexdigest()
             if content_hash not in self._image_cache:
-                mime_type = mimetypes.guess_type(str(image_path))[0] or "image/png"
-                self._image_cache[content_hash] = (
-                    self.image_extractor.extract_document_text(
+                db_cached = self._get_db_image_cache(content_hash)
+                if db_cached:
+                    self._image_cache[content_hash] = db_cached
+                else:
+                    mime_type = mimetypes.guess_type(str(image_path))[0] or "image/png"
+                    extracted = self.image_extractor.extract_document_text(
                         image_bytes,
                         mime_type,
                         "ui_design",
                         image_path.name,
                     )
-                )
+                    self._image_cache[content_hash] = extracted
+                    self._save_db_image_cache(content_hash, extracted)
             return self._image_cache[content_hash]
         except Exception as exc:
             import json  # noqa: PLC0415

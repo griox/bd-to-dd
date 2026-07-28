@@ -21,3 +21,12 @@ class GenerationJobModel(Base):
     status = Column(String, nullable=False)
     result = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class ImageAnalysisCacheModel(Base):
+    __tablename__ = "image_analysis_cache"
+
+    image_hash = Column(String, primary_key=True, index=True)
+    extraction_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
