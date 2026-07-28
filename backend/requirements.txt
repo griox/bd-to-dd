@@ -21,3 +21,7 @@ qdrant-client>=1.18.0
 
 # Phase 5+: BM25 local sparse index
 rank-bm25
+
+# Image Preprocessing
+Pillow>=10.0.0
+

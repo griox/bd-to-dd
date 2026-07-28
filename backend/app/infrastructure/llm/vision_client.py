@@ -19,6 +19,57 @@ class VisionExtractionError(Exception):
     """Raised when image-to-JSON extraction fails."""
 
 
+def _preprocess_image(image_bytes: bytes, max_dimension: int = 2048, slice_threshold: float = 3.0) -> list[tuple[bytes, str]]:
+    import logging  # noqa: PLC0415
+    from io import BytesIO  # noqa: PLC0415
+
+    logger = logging.getLogger(__name__)
+
+    try:
+        from PIL import Image  # noqa: PLC0415
+    except ImportError:
+        logger.warning("Pillow not installed. Skipping image preprocessing.")
+        return [(image_bytes, "image/png")]
+
+    try:
+        img = Image.open(BytesIO(image_bytes))
+        width, height = img.size
+        images = []
+
+        # Slice very long vertical images (e.g. scrolling screens)
+        if height / width > slice_threshold:
+            num_slices = int(height / (width * 1.5)) + 1
+            slice_height = height // num_slices
+            for i in range(num_slices):
+                top = i * slice_height
+                bottom = height if i == num_slices - 1 else (i + 1) * slice_height
+                images.append(img.crop((0, top, width, bottom)))
+        else:
+            images.append(img)
+
+        processed_list = []
+        for chunk in images:
+            c_width, c_height = chunk.size
+            if max(c_width, c_height) > max_dimension:
+                ratio = max_dimension / float(max(c_width, c_height))
+                new_size = (int(c_width * ratio), int(c_height * ratio))
+                chunk = chunk.resize(new_size, Image.Resampling.LANCZOS)
+
+            # Convert to WebP for maximum compression and fast API upload
+            out_io = BytesIO()
+            # If RGBA, save as WEBP handles transparency smoothly
+            if chunk.mode not in ("RGB", "RGBA"):
+                chunk = chunk.convert("RGBA")
+            chunk.save(out_io, format="WEBP", quality=80)
+            processed_list.append((out_io.getvalue(), "image/webp"))
+
+        return processed_list
+    except Exception as exc:
+        logger.warning("Image preprocessing failed: %s. Using original bytes.", exc)
+        return [(image_bytes, "image/png")]
+
+
+
 class GeminiVisionDesignExtractor:
     """Extracts normalized Detail Design screen sections from UI images."""
 
@@ -140,12 +191,14 @@ class GeminiVisionDesignExtractor:
 
         client = genai.Client(api_key=self._api_key)
         try:
+            processed_images = _preprocess_image(image_bytes)
+            contents = [prompt]
+            for img_data, img_mime in processed_images:
+                contents.append(types.Part.from_bytes(data=img_data, mime_type=img_mime))
+
             response = client.models.generate_content(
                 model=self._model,
-                contents=[
-                    prompt,
-                    types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
-                ],
+                contents=contents,
                 config={"response_mime_type": "application/json"},
             )
             text = response.text or "{}"
